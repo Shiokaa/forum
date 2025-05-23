@@ -1,36 +1,45 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
+	"forum/src/configs"
+	"forum/src/controllers"
+	"html/template"
+	"log"
+	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	dsn := "root@tcp(127.0.0.1:3306)/forum_db"
-	db, err := sql.Open("mysql", dsn)
-	if err != nil {
-		panic(err)
-	}
-	defer db.Close()
+	configs.EnvInit() // Chargement des variables d'environnements
 
-	rows, err := db.Query("SELECT user_id, name FROM users")
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var id int
-		var name string
-		if err := rows.Scan(&id, &name); err != nil {
-			panic(err)
-		}
-		fmt.Printf("User: %d - %s\n", id, name)
+	// Lancement de la base de donnée
+	db, dbErr := configs.DbInit()
+	if dbErr != nil {
+		log.Fatalf(" Initialisation de la DB impossible : %v ", dbErr)
 	}
 
-	if err := rows.Err(); err != nil {
-		panic(err)
+	defer db.Close() // Fermeture de la base de donnée une fois toute les données récupérées
+
+	// Récupération des templates
+	temp, tempErr := template.ParseGlob("./templates/*.html")
+	if tempErr != nil {
+		log.Fatalf(" Récupération des templates impossible : %v", tempErr)
 	}
+
+	inscriptionController := controllers.InscriptionControllerInit(temp) // Initialisation du template inscription
+
+	router := mux.NewRouter() // Initialisation du router
+
+	// Routage des différents controllers
+	inscriptionController.InsciptionRouter(router)
+
+	// Mise en place du serveur sur le port 3000
+	serveErr := http.ListenAndServe(":3000", router)
+	if serveErr != nil {
+		log.Fatalf("Erreur lancement serveur - %v", serveErr)
+	}
+	fmt.Println("Serveur lancé : http://localhost:3000")
 }
