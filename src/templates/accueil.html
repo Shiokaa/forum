@@ -1,0 +1,48 @@
+{{define "accueil"}}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Forum</title>
+    <link rel="stylesheet" href="/static/styles/accueil.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo"><strong>ForumXYZ</strong></div>
+        <nav>
+            <a href="#">Accueil</a>
+            <a href="#">Catégories</a>
+            <a href="#">Recherche</a>
+            <a href="#">Connexion</a>
+        </nav>
+    </header>
+
+    <main>
+        {{range .Test}}
+        <div class="thread">
+            <h2>{{.TopicTitle}}</h2>
+            <p>Posté par <strong>{{.UserName}}</strong> le 27 mai 2025</p>
+        </div>
+        <div class="thread">
+            <h2>Titre du sujet 2</h2>
+            <p>Posté par <strong>Bob</strong> le 26 mai 2025</p>
+        </div>
+        {{end}}
+    </main>
+
+    <footer>
+        <p>
+            <a href="#">À propos</a> |
+            <a href="#">Contact</a> |
+            <a href="#">Politique de confidentialité</a>
+        </p>
+    </footer>
+
+</body>
+
+</html>
+{{end}}

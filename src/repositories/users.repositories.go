@@ -7,17 +7,17 @@ import (
 )
 
 // Structure permettant l'injection de la base de donnée
-type UserRepositories struct {
+type UsersRepositories struct {
 	db *sql.DB
 }
 
 // Fonction pour initialiser le repositorie de user avec l'injection de la base de donnée
-func UserRepositoriesInit(db *sql.DB) *UserRepositories {
-	return &UserRepositories{db}
+func UsersRepositoriesInit(db *sql.DB) *UsersRepositories {
+	return &UsersRepositories{db}
 }
 
 // Fonction permettant d'initialiser la création de l'utilisateur en récupérant les colonnes de la base de donnée
-func (r *UserRepositories) CreateUser(user models.User) (int, error) {
+func (r *UsersRepositories) CreateUser(user models.Users) (int, error) {
 	query := "INSERT INTO `users`(`role_id`, `name`, `email`, `password`) VALUES (?,?,?,?);" // Query pour insérer des valeurs dans une table
 
 	// Utilisation de la query en remplaçant les valeurs par celles à injecter
@@ -28,13 +28,13 @@ func (r *UserRepositories) CreateUser(user models.User) (int, error) {
 		user.Password,
 	)
 	if sqlErr != nil {
-		return -1, fmt.Errorf(" Erreur ajout produit - Erreur : \n\t %s", sqlErr.Error())
+		return -1, fmt.Errorf(" Erreur ajout utilisateur - Erreur : \n\t %s", sqlErr.Error())
 	}
 
 	// Récupération du dernier ID, cela permet de savoir si on a bien ajouté un utilisateur ou non
 	id, idErr := sqlResult.LastInsertId()
 	if idErr != nil {
-		return -1, fmt.Errorf(" Erreur ajout produit - Erreur récupération identifiant : \n\t %s", idErr.Error())
+		return -1, fmt.Errorf(" Erreur ajout utilisateur - Erreur récupération identifiant : \n\t %s", idErr.Error())
 	}
 
 	return int(id), nil

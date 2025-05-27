@@ -11,12 +11,12 @@ import (
 
 // Structure avec injection de service et template
 type InscriptionController struct {
-	service  *services.UserServices
+	service  *services.UsersServices
 	template *template.Template
 }
 
 // Fonction pour initialiser le controller et les injections
-func InscriptionControllerInit(template *template.Template, service *services.UserServices) *InscriptionController {
+func InscriptionControllerInit(template *template.Template, service *services.UsersServices) *InscriptionController {
 	return &InscriptionController{template: template, service: service}
 }
 
@@ -51,7 +51,7 @@ func (c *InscriptionController) InscriptionTraitement(w http.ResponseWriter, r *
 	}
 
 	// Création d'un objet user pour enregistrer les données reçu
-	newUser := models.User{
+	newUser := models.Users{
 		Role_id:  3,
 		Name:     username,
 		Email:    email,
