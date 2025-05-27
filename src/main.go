@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"forum/src/configs"
 	"forum/src/controllers"
+	"forum/src/services"
 	"html/template"
 	"log"
 	"net/http"
@@ -24,22 +24,24 @@ func main() {
 	defer db.Close() // Fermeture de la base de donnée une fois toute les données récupérées
 
 	// Récupération des templates
-	temp, tempErr := template.ParseGlob("./templates/*.html")
+	templates, tempErr := template.ParseGlob("./templates/*.html")
 	if tempErr != nil {
 		log.Fatalf(" Récupération des templates impossible : %v", tempErr)
 	}
 
-	inscriptionController := controllers.InscriptionControllerInit(temp) // Initialisation du template inscription
+	userServices := services.UserServicesInit(db) // Initialisation du service user
+
+	inscriptionController := controllers.InscriptionControllerInit(templates, userServices) // Initialisation du template inscription
 
 	router := mux.NewRouter() // Initialisation du router
 
 	// Routage des différents controllers
 	inscriptionController.InsciptionRouter(router)
 
-	// Mise en place du serveur sur le port 3000
-	serveErr := http.ListenAndServe(":3000", router)
+	// Mise en place du serveur sur le port 8080
+	log.Println("Démarrage du serveur sur http://localhost:8080 ...")
+	serveErr := http.ListenAndServe(":8080", router)
 	if serveErr != nil {
 		log.Fatalf("Erreur lancement serveur - %v", serveErr)
 	}
-	fmt.Println("Serveur lancé : http://localhost:3000")
 }
