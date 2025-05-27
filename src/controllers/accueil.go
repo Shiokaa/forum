@@ -14,9 +14,14 @@ type AccueilController struct {
 	templates *template.Template
 }
 
+type TopicWithUser struct {
+	Title      string
+	Created_at string
+	Name       string
+}
+
 type DisplayData struct {
-	Username string
-	Title    string
+	TopicWithUser []TopicWithUser
 }
 
 func AccueilControllerInit(template *template.Template, service *services.TopicsServices) *AccueilController {
@@ -30,12 +35,21 @@ func (c *AccueilController) AccueilRouter(r *mux.Router) {
 func (c *AccueilController) DisplayAccueil(w http.ResponseWriter, r *http.Request) {
 	var data DisplayData
 
-	topicTitle, username, err := c.service.Display()
+	topics, users, err := c.service.Display()
 	if err != nil {
 		http.Redirect(w, r, "404", http.StatusMovedPermanently)
 	}
 
-	fmt.Println(topicTitle, username)
+	fmt.Println(topics)
+
+	//Il faut rajouter le created at
+
+	for i := range topics {
+		data.TopicWithUser = append(data.TopicWithUser, TopicWithUser{
+			Title: topics[i],
+			Name:  users[i],
+		})
+	}
 
 	c.templates.ExecuteTemplate(w, "accueil", data)
 }

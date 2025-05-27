@@ -2,7 +2,6 @@ package services
 
 import (
 	"database/sql"
-	"forum/src/models"
 	"forum/src/repositories"
 )
 
@@ -14,12 +13,12 @@ func TopicsServicesInit(db *sql.DB) *TopicsServices {
 	return &TopicsServices{topicsRepositories: repositories.TopicsRepositoriesInit(db)}
 }
 
-func (s *TopicsServices) Display() ([]*models.Topics, []*models.Users, error) {
+func (s *TopicsServices) Display() ([]string, []string, error) {
 
-	topicTitle, userName, err := s.topicsRepositories.GetTopicTitleWithCreatorName()
+	topics, users, err := s.topicsRepositories.GetTopicsWithCreators()
 	if err != nil {
 		return nil, nil, err
 	}
 
-	return topicTitle, userName, nil
+	return topics, users, nil
 }

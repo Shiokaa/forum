@@ -22,14 +22,10 @@
     </header>
 
     <main>
-        {{range .Test}}
+        {{range .TopicWithUser}}
         <div class="thread">
-            <h2>{{.TopicTitle}}</h2>
-            <p>Posté par <strong>{{.UserName}}</strong> le 27 mai 2025</p>
-        </div>
-        <div class="thread">
-            <h2>Titre du sujet 2</h2>
-            <p>Posté par <strong>Bob</strong> le 26 mai 2025</p>
+            <h2>{{.Title}}</h2>
+            <p>Posté par <strong>{{.Name}}</strong> {.Created_at}</p>
         </div>
         {{end}}
     </main>
