@@ -1,0 +1,72 @@
+package controllers
+
+import (
+	"forum/src/models"
+	"forum/src/services"
+	"html/template"
+	"net/http"
+	"strconv"
+
+	"github.com/gorilla/mux"
+)
+
+// Structure avec injection de service et template
+type TopicController struct {
+	service  *services.TopicsServices
+	template *template.Template
+}
+
+func TopicControllerInit(template *template.Template, service *services.TopicsServices) *TopicController {
+	return &TopicController{service: service, template: template}
+}
+
+type TopicData struct {
+	Item     models.Topics_Join_Users_Forums
+	Messages []models.Topics_Join_Messages
+	Error    bool
+}
+
+func (c *TopicController) TopicRouteur(r *mux.Router) {
+	r.HandleFunc("/topic", c.DisplayTopic).Methods("GET")
+}
+
+func (c *TopicController) DisplayTopic(w http.ResponseWriter, r *http.Request) {
+	var data TopicData
+
+	// Gérer les codes d'erreur passés en paramètre
+	code := r.FormValue("code")
+	if code == "invalid_id" || code == "item_not_found" || code == "messages_not_found" {
+		data.Error = true
+		data.Item = models.Topics_Join_Users_Forums{}
+		data.Messages = []models.Topics_Join_Messages{}
+		c.template.ExecuteTemplate(w, "topic", data)
+		return
+	}
+
+	// Récupération de l'ID depuis les paramètres
+	idString := r.FormValue("id")
+	idInt, errConv := strconv.Atoi(idString)
+	if errConv != nil {
+		http.Redirect(w, r, "/topic?code=invalid_id", http.StatusSeeOther)
+		return
+	}
+
+	// Lecture du topic par ID
+	item, errReadId := c.service.ReadId(idInt)
+	if errReadId != nil {
+		http.Redirect(w, r, "/topic?code=item_not_found", http.StatusSeeOther)
+		return
+	}
+
+	messages, errReadMessages := c.service.ReadMessages(idInt)
+	if errReadMessages != nil {
+		http.Redirect(w, r, "/topic?code=messages_not_found", http.StatusSeeOther)
+		return
+	}
+
+	// Affichage du topic
+	data.Item = item
+	data.Messages = messages
+
+	c.template.ExecuteTemplate(w, "topic", data)
+}

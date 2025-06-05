@@ -1,0 +1,67 @@
+{{define "topic"}}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Topic - {{.Item.Topics.Title}}</title>
+    <link rel="stylesheet" href="/static/styles/topic.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo"><strong>ForumXYZ</strong></div>
+        <nav aria-label="Navigation principale">
+            <a href="/accueil">Accueil</a>
+            <a href="#">Catégories</a>
+            <a href="#">Recherche</a>
+            <a href="#">Connexion</a>
+        </nav>
+    </header>
+
+    <main>
+        {{if .Error}}
+        <h2>Une erreur est survenue lors du chargement du topic.</h2>
+        {{else}}
+        {{if .Item.Topics.Status}}
+        <section class="topic-container">
+            <header class="topic-meta">
+                <h1 class="topic-title">{{.Item.Topics.Title}}</h1>
+                <span><strong>Auteur :</strong> {{.Item.Users.Name}}</span>
+                <span><strong>Forum :</strong> {{.Item.Forums.Name}}</span>
+                <span><strong>Date :</strong> {{.Item.Topics.Created_at}}</span>
+            </header>
+
+            <section class="topic-content-container">
+                {{range .Messages}}
+                <article class="topic-content">
+                    <div class="message-author">
+                        <p>{{.Users.Name}}</p>
+                    </div>
+                    <div class="message-content">
+                        <p>{{.Messages.Content}}</p>
+                    </div>
+                </article>
+                {{end}}
+            </section>
+        </section>
+        {{else}}
+        <h2>Ce topic est désactivé ou n'est plus disponible.</h2>
+        {{end}}
+        {{end}}
+    </main>
+
+    <footer>
+        <p>
+            <a href="#">À propos</a> |
+            <a href="#">Contact</a> |
+            <a href="#">Politique de confidentialité</a>
+        </p>
+    </footer>
+
+</body>
+
+</html>
+{{end}}

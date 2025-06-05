@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"fmt"
+	"forum/src/models"
 	"forum/src/services"
 	"html/template"
 	"net/http"
@@ -9,47 +9,50 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Structure avec injection de service et template
 type AccueilController struct {
-	service   *services.TopicsServices
-	templates *template.Template
+	service  *services.TopicsServices
+	template *template.Template
 }
 
-type TopicWithUser struct {
-	Title      string
-	Created_at string
-	Name       string
+// Structure créant une liste de topics et users
+type AccueilData struct {
+	TopicsWithUsers []models.Topics_Join_Users
+	Error           bool
 }
 
-type DisplayData struct {
-	TopicWithUser []TopicWithUser
-}
-
+// Fonction pour initialiser le controller et les injections
 func AccueilControllerInit(template *template.Template, service *services.TopicsServices) *AccueilController {
-	return &AccueilController{templates: template, service: service}
+	return &AccueilController{template: template, service: service}
 }
 
+// Routeur pour mettre en place les routes d'accueil
 func (c *AccueilController) AccueilRouter(r *mux.Router) {
 	r.HandleFunc("/accueil", c.DisplayAccueil).Methods("GET")
 }
 
+// Fonctiob permettant d'afficher les données sur l'accueil
 func (c *AccueilController) DisplayAccueil(w http.ResponseWriter, r *http.Request) {
-	var data DisplayData
+	// Récupération des variables
+	var data AccueilData
 
-	topics, users, err := c.service.Display()
-	if err != nil {
-		http.Redirect(w, r, "404", http.StatusMovedPermanently)
+	// Vérification de la précense des données
+	code := r.FormValue("code")
+	if code != "" {
+		data.Error = true
+		data.TopicsWithUsers = []models.Topics_Join_Users{}
+		c.template.ExecuteTemplate(w, "/accueil", data)
+		return
 	}
 
-	fmt.Println(topics)
-
-	//Il faut rajouter le created at
-
-	for i := range topics {
-		data.TopicWithUser = append(data.TopicWithUser, TopicWithUser{
-			Title: topics[i],
-			Name:  users[i],
-		})
+	// Ici on récupére les données de la base de donnée
+	items, errData := c.service.Display()
+	if errData != nil {
+		http.Redirect(w, r, "/accueil?code=invalid_data", http.StatusSeeOther)
 	}
 
-	c.templates.ExecuteTemplate(w, "accueil", data)
+	// Récupération des données pour les envoyés dans l'html
+	data.TopicsWithUsers = items
+
+	c.template.ExecuteTemplate(w, "accueil", data)
 }

@@ -35,15 +35,16 @@ func main() {
 
 	inscriptionController := controllers.InscriptionControllerInit(templates, usersServices) // Initialisation du controller inscription
 	accueilController := controllers.AccueilControllerInit(templates, topicServices)         // Initialisation du controller accueil
+	topicController := controllers.TopicControllerInit(templates, topicServices)
 
 	router := mux.NewRouter() // Initialisation du router
 
 	// Routage des différents controllers
 	inscriptionController.InsciptionRouter(router)
 	accueilController.AccueilRouter(router)
+	topicController.TopicRouteur(router)
 
-	// Sert les fichiers static
-	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./assets"))))
+	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./assets")))) // Sert les fichiers static
 
 	// Mise en place du serveur sur le port 8080
 	log.Println("Démarrage du serveur sur http://localhost:8080 ...")

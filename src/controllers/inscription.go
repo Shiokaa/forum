@@ -28,9 +28,9 @@ func (c *InscriptionController) InsciptionRouter(r *mux.Router) {
 
 // Fonction permettant d'afficher la page formulaire d'inscription avec une gestion d'erreur
 func (c *InscriptionController) DisplayInscription(w http.ResponseWriter, r *http.Request) {
-	err := r.FormValue("code")
-	if err != "" {
-		c.template.ExecuteTemplate(w, "inscription", err)
+	code := r.FormValue("code")
+	if code != "" {
+		c.template.ExecuteTemplate(w, "inscription", code)
 		return
 	}
 
@@ -46,7 +46,7 @@ func (c *InscriptionController) InscriptionTraitement(w http.ResponseWriter, r *
 
 	// Vérification de la présence des données
 	if username == "" || email == "" || password == "" {
-		http.Redirect(w, r, "/inscription?code=400", http.StatusMovedPermanently)
+		http.Redirect(w, r, "/inscription?invalid_data", http.StatusSeeOther)
 		return
 	}
 

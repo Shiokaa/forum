@@ -14,7 +14,7 @@
     <header>
         <div class="logo"><strong>ForumXYZ</strong></div>
         <nav>
-            <a href="#">Accueil</a>
+            <a href="/accueil">Accueil</a>
             <a href="#">Catégories</a>
             <a href="#">Recherche</a>
             <a href="#">Connexion</a>
@@ -22,11 +22,15 @@
     </header>
 
     <main>
-        {{range .TopicWithUser}}
+        {{if .Error}}
+        <p>Erreur lors de la récupération des données</p>
+        {{else}}
+        {{range .TopicsWithUsers}}
         <div class="thread">
-            <h2>{{.Title}}</h2>
-            <p>Posté par <strong>{{.Name}}</strong> {.Created_at}</p>
+            <a href="/topic?id={{.Topics.Topic_id}}">{{.Topics.Title}}</a>
+            <p>Posté par <strong>{{.Users.Name}}</strong> {{.Topics.Created_at}}</p>
         </div>
+        {{end}}
         {{end}}
     </main>
 
