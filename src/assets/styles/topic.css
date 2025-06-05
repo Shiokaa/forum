@@ -6,15 +6,17 @@
 
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: #f9f9f9;
-  color: #333;
+  background: #fff3f7;
+  color: #4a1f2f;
   line-height: 1.6;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 header {
-  background-color: #2c3e50;
-  color: white;
+  background-color: #524c4e;
+  color: #fcebf1;
   padding: 1.5em 2em;
   display: flex;
   justify-content: space-between;
@@ -27,45 +29,46 @@ header {
 }
 
 nav a {
-  color: white;
+  color: #fcebf1;
   margin: 0 1em;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 nav a:hover {
-  color: #f39c12;
+  color: #f8bbd0;
 }
 
 main {
   padding: 2em 1em;
   max-width: 960px;
   margin: 0 auto;
+  flex: 1;
 }
 
 h2 {
-  color: #c0392b;
+  color: #a78e97;
   margin-bottom: 1em;
 }
 
 .topic-container {
-  background-color: #fff;
+  background-color: #ffffff;
   padding: 2em;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(233, 30, 99, 0.08); /* rose pâle ombrée */
   margin-bottom: 2em;
 }
 
 .topic-title {
   font-size: 2.2em;
   margin-bottom: 1em;
-  color: #2c3e50;
+  color: #524c4e;
 }
 
 .topic-meta {
-  background-color: #ecf0f1;
+  background-color: #fcebf1;
   font-size: 0.95em;
-  color: #555;
+  color: #a78e97;
   margin-bottom: 2em;
   padding: 1rem 1.5rem;
   border-radius: 8px;
@@ -85,44 +88,48 @@ h2 {
   gap: 1.5em;
 }
 
+.topic-content-container a {
+  text-decoration: none;
+}
+
 .topic-content {
-  background-color: white;
-  border-left: 4px solid #3498db;
+  background-color: #ffffff;
+  border-left: 4px solid #ffcfe0;
   padding: 1.5em;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 6px rgba(233, 30, 99, 0.05);
 }
 
 .message-author p {
   font-weight: bold;
-  color: #34495e;
+  color: #524c4e;
   margin-bottom: 0.5em;
 }
 
 .message-content p {
-  color: #333;
+  color: #4a1f2f;
   margin: 0;
 }
 
 .topic-content em {
-  color: #999;
+  color: #a79ca0;
 }
 
 footer {
-  background-color: #2c3e50;
-  color: white;
+  background-color: #524c4e;
+  color: #fcebf1;
   text-align: center;
   padding: 1.5em 1em;
   margin-top: 3em;
 }
 
 footer a {
-  color: #ccc;
+  color: #fcebf1;
   margin: 0 0.7em;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 footer a:hover {
-  color: white;
+  color: #f8bbd0;
 }

@@ -16,20 +16,24 @@ type TopicController struct {
 	template *template.Template
 }
 
+// Fonction pour initialiser le controller et les injections
 func TopicControllerInit(template *template.Template, service *services.TopicsServices) *TopicController {
 	return &TopicController{service: service, template: template}
 }
 
+// Structure créant un item qui est le topic ainsi que l'utilisateur ayant écrit le topic, récupère aussi les messages du topic
 type TopicData struct {
 	Item     models.Topics_Join_Users_Forums
 	Messages []models.Topics_Join_Messages
 	Error    bool
 }
 
+// Routeur pour mettre en place les routes d'inscription
 func (c *TopicController) TopicRouteur(r *mux.Router) {
 	r.HandleFunc("/topic", c.DisplayTopic).Methods("GET")
 }
 
+// Fonction permettant d'afficher les topics et de gérer les données
 func (c *TopicController) DisplayTopic(w http.ResponseWriter, r *http.Request) {
 	var data TopicData
 
@@ -58,6 +62,7 @@ func (c *TopicController) DisplayTopic(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Lecture des messages par ID
 	messages, errReadMessages := c.service.ReadMessages(idInt)
 	if errReadMessages != nil {
 		http.Redirect(w, r, "/topic?code=messages_not_found", http.StatusSeeOther)

@@ -53,6 +53,7 @@ func (r *TopicsRepositories) GetTopicsWithCreators() ([]models.Topics_Join_Users
 func (r *TopicsRepositories) GetTopicWithId(id int) (models.Topics_Join_Users_Forums, error) {
 	var item models.Topics_Join_Users_Forums
 
+	// Query permettant de join l'utilisateur ayant écrit le topic ainsi que le forum du topic, aux détails du topic
 	query := `
 	SELECT t.topic_id, t.forum_id, t.user_id, t.title, t.status, t.created_at, t.updated_at, u.name, f.name
 	FROM topics AS t
@@ -61,8 +62,8 @@ func (r *TopicsRepositories) GetTopicWithId(id int) (models.Topics_Join_Users_Fo
 	WHERE t.topic_id = ?
 	`
 
+	// Récupération de la query en une seul "row"
 	sqlErr := r.db.QueryRow(query, id).Scan(&item.Topics.Topic_id, &item.Topics.Forum_id, &item.Topics.User_Id, &item.Topics.Title, &item.Topics.Status, &item.Topics.Created_at, &item.Topics.Updated_at, &item.Users.Name, &item.Forums.Name)
-
 	if sqlErr != nil {
 		if sqlErr == sql.ErrNoRows {
 			return models.Topics_Join_Users_Forums{}, nil
@@ -76,13 +77,13 @@ func (r *TopicsRepositories) GetTopicWithId(id int) (models.Topics_Join_Users_Fo
 func (r *TopicsRepositories) GetTopicWithMessage(id int) ([]models.Topics_Join_Messages, error) {
 	var items []models.Topics_Join_Messages
 
-	// Query permettant d'effectuer un join entre users et topics
+	// Query permettant d'effectuer un join sur les messsages pour récupérer l'user du message et le topic où se trouve le message
 	query := `
 	SELECT m.content, m.created_at, u.name
 	FROM messages AS m
-	JOIN topics AS t
-    JOIN users as u ON m.user_id = u.user_id
-	WHERE (t.topic_id = ?) = m.topic_id
+	JOIN users AS u ON m.user_id = u.user_id
+	JOIN topics AS t ON m.topic_id = t.topic_id
+	WHERE t.topic_id = ?
     `
 
 	// Récupération de la query en "row"

@@ -29,6 +29,7 @@ func (s *TopicsServices) Display() ([]models.Topics_Join_Users, error) {
 	return items, nil
 }
 
+// Fonction permettant de parcourir un topic via l'id, ici nous récupérons aussi l'utilisateur et le forum du topic
 func (s *TopicsServices) ReadId(idTopic int) (models.Topics_Join_Users_Forums, error) {
 
 	if idTopic < 1 {
@@ -43,6 +44,7 @@ func (s *TopicsServices) ReadId(idTopic int) (models.Topics_Join_Users_Forums, e
 	return topic, nil
 }
 
+// FOnction permettant de récupérer les messages lié à un certain topic en passsant par l'id
 func (s *TopicsServices) ReadMessages(idTopic int) ([]models.Topics_Join_Messages, error) {
 	// Récupération des données avec gestion d'erreur
 	items, err := s.topicsRepositories.GetTopicWithMessage(idTopic)

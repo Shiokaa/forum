@@ -36,14 +36,16 @@
 
             <section class="topic-content-container">
                 {{range .Messages}}
-                <article class="topic-content">
-                    <div class="message-author">
-                        <p>{{.Users.Name}}</p>
-                    </div>
-                    <div class="message-content">
-                        <p>{{.Messages.Content}}</p>
-                    </div>
-                </article>
+                <a href="">
+                    <article class="topic-content">
+                        <div class="message-author">
+                            <p>{{.Users.Name}}</p>
+                        </div>
+                        <div class="message-content">
+                            <p>{{.Messages.Content}}</p>
+                        </div>
+                    </article>
+                </a>
                 {{end}}
             </section>
         </section>
