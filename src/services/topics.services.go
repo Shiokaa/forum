@@ -33,7 +33,7 @@ func (s *TopicsServices) Display() ([]models.Topics_Join_Users, error) {
 func (s *TopicsServices) ReadId(idTopic int) (models.Topics_Join_Users_Forums, error) {
 
 	if idTopic < 1 {
-		return models.Topics_Join_Users_Forums{}, fmt.Errorf(" Erreur récupération des topics - identifiant invalide : %d", idTopic)
+		return models.Topics_Join_Users_Forums{}, fmt.Errorf(" Erreur récupération du topic - identifiant invalide : %d", idTopic)
 	}
 
 	topic, errTopic := s.topicsRepositories.GetTopicWithId(idTopic)

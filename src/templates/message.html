@@ -1,0 +1,53 @@
+{{define "message"}}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message - {{.Item.Topics.Title}}</title>
+    <link rel="stylesheet" href="/static/styles/message.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo"><strong>ForumXYZ</strong></div>
+        <nav aria-label="Navigation principale">
+            <a href="/accueil">Accueil</a>
+            <a href="#">Catégories</a>
+            <a href="#">Recherche</a>
+            <a href="#">Connexion</a>
+        </nav>
+    </header>
+
+    <main>
+        {{if .Error}}
+        <h2>Une erreur est survenue lors du chargement du message.</h2>
+        {{else}}
+        <section class="message-container">
+            <header class="message-meta">
+                <h1 class="message-title">Sur le topic : {{.Item.Topics.Title}}</h1>
+                <span><strong>Auteur :</strong> {{.Item.Users.Name}}</span>
+                <span><strong>Date :</strong> {{.Item.Messages.Created_at}}</span>
+            </header>
+
+            <article class="message-content">
+                <p>{{.Item.Messages.Content}}</p>
+            </article>
+        </section>
+        {{end}}
+    </main>
+
+    <footer>
+        <p>
+            <a href="#">À propos</a> |
+            <a href="#">Contact</a> |
+            <a href="#">Politique de confidentialité</a>
+        </p>
+    </footer>
+
+</body>
+
+</html>
+{{end}}

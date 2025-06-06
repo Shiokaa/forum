@@ -31,7 +31,7 @@ func (r *TopicsRepositories) GetTopicsWithCreators() ([]models.Topics_Join_Users
 	// Récupération de la query en "row"
 	rows, err := r.db.Query(query)
 	if err != nil {
-		return items, fmt.Errorf("échec de la requête SQL : %w", err)
+		return items, fmt.Errorf(" échec de la requête SQL : %w", err)
 	}
 	defer rows.Close()
 
@@ -40,7 +40,7 @@ func (r *TopicsRepositories) GetTopicsWithCreators() ([]models.Topics_Join_Users
 		var item models.Topics_Join_Users
 
 		if err := rows.Scan(&item.Topics.Topic_id, &item.Topics.Title, &item.Topics.Created_at, &item.Users.Name); err != nil {
-			log.Printf("Erreur de scan topics : %v", err)
+			log.Printf(" Erreur de scan topics : %v", err)
 			continue
 		}
 
@@ -79,7 +79,7 @@ func (r *TopicsRepositories) GetTopicWithMessage(id int) ([]models.Topics_Join_M
 
 	// Query permettant d'effectuer un join sur les messsages pour récupérer l'user du message et le topic où se trouve le message
 	query := `
-	SELECT m.content, m.created_at, u.name
+	SELECT m.message_id, m.content, m.created_at, u.name
 	FROM messages AS m
 	JOIN users AS u ON m.user_id = u.user_id
 	JOIN topics AS t ON m.topic_id = t.topic_id
@@ -89,7 +89,7 @@ func (r *TopicsRepositories) GetTopicWithMessage(id int) ([]models.Topics_Join_M
 	// Récupération de la query en "row"
 	rows, err := r.db.Query(query, id)
 	if err != nil {
-		return items, fmt.Errorf("échec de la requête SQL : %w", err)
+		return items, fmt.Errorf(" échec de la requête SQL : %w", err)
 	}
 	defer rows.Close()
 
@@ -97,8 +97,8 @@ func (r *TopicsRepositories) GetTopicWithMessage(id int) ([]models.Topics_Join_M
 	for rows.Next() {
 		var item models.Topics_Join_Messages
 
-		if err := rows.Scan(&item.Messages.Content, &item.Messages.Created_at, &item.Users.Name); err != nil {
-			log.Printf("Erreur de scan messages : %v", err)
+		if err := rows.Scan(&item.Messages.Message_id, &item.Messages.Content, &item.Messages.Created_at, &item.Users.Name); err != nil {
+			log.Printf(" Erreur de scan messages : %v", err)
 			continue
 		}
 
@@ -108,3 +108,4 @@ func (r *TopicsRepositories) GetTopicWithMessage(id int) ([]models.Topics_Join_M
 	return items, nil
 
 }
+
