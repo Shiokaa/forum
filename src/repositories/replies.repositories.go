@@ -13,17 +13,19 @@ type RepliesRepositories struct {
 }
 
 // Fonction pour initialiser le repositorie de user avec l'injection de la base de donnée
-func ReplyRepositoriesInit(db *sql.DB) *RepliesRepositories {
+func RepliesRepositoriesInit(db *sql.DB) *RepliesRepositories {
 	return &RepliesRepositories{db: db}
 }
 
-func (r *MessagesRepositories) GetReplies(id int) ([]models.Replies_Join_User, error) {
+func (r *RepliesRepositories) GetReplies(id int) ([]models.Replies_Join_User, error) {
 	var items []models.Replies_Join_User
 
 	// Query permettant de récupérer les réponses à un message
 	query := `
-	SELECT content, created_at
-	FROM message_replies WHERE reply_to_id = ?;
+	SELECT mr.content, mr.created_at, u.name
+	FROM message_replies AS mr
+	JOIN users AS u ON u.user_id = mr.user_id
+	WHERE mr.reply_to_id = ?;
     `
 
 	// Récupération de la query en "row"
@@ -37,7 +39,7 @@ func (r *MessagesRepositories) GetReplies(id int) ([]models.Replies_Join_User, e
 	for rows.Next() {
 		var item models.Replies_Join_User
 
-		if err := rows.Scan(&item.Replies.Content, &item.Replies.Created_at); err != nil {
+		if err := rows.Scan(&item.Replies.Content, &item.Replies.Created_at, &item.Users.Name); err != nil {
 			log.Printf(" Erreur de scan topics : %v", err)
 			continue
 		}

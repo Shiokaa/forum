@@ -17,8 +17,9 @@ type MessageController struct {
 }
 
 type MessageData struct {
-	Item  models.Topics_Join_Messages
-	Error bool
+	Item    models.Topics_Join_Messages
+	Replies []models.Replies_Join_User
+	Error   bool
 }
 
 // Fonction pour initialiser le controller et les injections
@@ -52,12 +53,19 @@ func (c *MessageController) DisplayMessage(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	item, err := c.service.MessageRepositories.GetMessageById(idInt)
-	if err != nil {
+	item, errMessages := c.service.ReadMessagesId(idInt)
+	if errMessages != nil {
 		http.Redirect(w, r, "/topic?code=item_not_found", http.StatusSeeOther)
 		return
 	}
 
+	items, errReplies := c.service.ReadRepliesId(idInt)
+	if errReplies != nil {
+		http.Redirect(w, r, "/topic?code=item_not_found", http.StatusSeeOther)
+		return
+	}
+
+	data.Replies = items
 	data.Item = item
 
 	c.template.ExecuteTemplate(w, "message", data)

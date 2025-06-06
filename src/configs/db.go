@@ -10,6 +10,7 @@ func DbInit() (*sql.DB, error) {
 
 	// Chargement de toutes les variables d'environnements
 	dbName := GetEnvWithDefault("DB_NAME", "")
+	dbPsw := GetEnvWithDefault("DB_PSW", "")
 	dbUser := GetEnvWithDefault("DB_USER", "")
 	dbHost := GetEnvWithDefault("DB_HOST", "")
 	dbPort := GetEnvWithDefault("DB_PORT", "")
@@ -19,7 +20,7 @@ func DbInit() (*sql.DB, error) {
 		return nil, fmt.Errorf(" Erreur connexion base de donnée. Données manquantes")
 	}
 
-	connectionString := fmt.Sprintf("%s@tcp(%s:%s)/%s", dbUser, dbHost, dbPort, dbName) // Création d'une string pour l'utiliser après
+	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPsw, dbHost, dbPort, dbName) // Création d'une string pour l'utiliser après
 
 	var err error // Variable error pour l'utiliser lors du .Ping()
 

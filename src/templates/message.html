@@ -26,15 +26,32 @@
         <h2>Une erreur est survenue lors du chargement du message.</h2>
         {{else}}
         <section class="message-container">
-            <header class="message-meta">
-                <h1 class="message-title">Sur le topic : {{.Item.Topics.Title}}</h1>
-                <span><strong>Auteur :</strong> {{.Item.Users.Name}}</span>
-                <span><strong>Date :</strong> {{.Item.Messages.Created_at}}</span>
-            </header>
-
-            <article class="message-content">
-                <p>{{.Item.Messages.Content}}</p>
+            <h1 class="message-title">{{.Item.Topics.Title}}</h1>
+            <br>
+            <article class="message">
+                <div class="message-meta">
+                    <span><strong>{{.Item.Users.Name}}</strong></span>
+                    <span>{{.Item.Messages.Created_at}}</span>
+                </div>
+                <div class="message-content">
+                    <p>{{.Item.Messages.Content}}</p>
+                </div>
             </article>
+        </section>
+
+        <section class="replies-container">
+            <h2>Réponses</h2>
+            {{range .Replies}}
+            <article class="reply">
+                <div class="reply-meta">
+                    <span><strong>{{.Users.Name}}</strong></span>
+                    <span>{{.Replies.Created_at}}</span>
+                </div>
+                <div class="reply-content">
+                    <p>{{.Replies.Content}}</p>
+                </div>
+            </article>
+            {{end}}
         </section>
         {{end}}
     </main>
