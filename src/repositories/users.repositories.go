@@ -2,8 +2,11 @@ package repositories
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"forum/src/models"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 // Structure permettant l'injection de la base de donnée
@@ -38,4 +41,29 @@ func (r *UsersRepositories) CreateUser(user models.Users) (int, error) {
 	}
 
 	return int(id), nil
+}
+
+func (r *UsersRepositories) ConnectUser(email string, password string) (models.Users, error) {
+	var user models.Users
+
+	query := `
+	SELECT user_id, role_id, name, email, password, created_at, updated_at
+	FROM users
+	WHERE email = ?
+	`
+
+	sqlErr := r.db.QueryRow(query, email).Scan(&user.User_Id, &user.Role_id, &user.Name, &user.Email, &user.Password, &user.Created_at, &user.Updated_at)
+	if sqlErr != nil {
+		if sqlErr == sql.ErrNoRows {
+			return models.Users{}, nil
+		}
+		return models.Users{}, fmt.Errorf(" Erreur récupération item - Erreur : \n\t %s", sqlErr.Error())
+	}
+
+	hashedErr := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
+	if hashedErr != nil {
+		return models.Users{}, errors.New("identifiants invalides")
+	}
+
+	return user, nil
 }

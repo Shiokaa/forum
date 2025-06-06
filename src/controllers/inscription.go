@@ -1,29 +1,33 @@
 package controllers
 
 import (
+	"forum/src/middlewares"
 	"forum/src/models"
 	"forum/src/services"
 	"html/template"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/gorilla/sessions"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // Structure avec injection de service et template
 type InscriptionController struct {
 	service  *services.UsersServices
 	template *template.Template
+	store    *sessions.CookieStore
 }
 
 // Fonction pour initialiser le controller et les injections
-func InscriptionControllerInit(template *template.Template, service *services.UsersServices) *InscriptionController {
-	return &InscriptionController{template: template, service: service}
+func InscriptionControllerInit(template *template.Template, service *services.UsersServices, store *sessions.CookieStore) *InscriptionController {
+	return &InscriptionController{template: template, service: service, store: store}
 }
 
 // Routeur pour mettre en place les routes d'inscription
 func (c *InscriptionController) InsciptionRouter(r *mux.Router) {
-	r.HandleFunc("/inscription", c.DisplayInscription).Methods("GET")
-	r.HandleFunc("/inscription/traitement", c.InscriptionTraitement).Methods("POST")
+	r.Handle("/inscription", middlewares.RequireGuest(c.store, http.HandlerFunc(c.DisplayInscription))).Methods("GET")
+	r.Handle("/inscription/traitement", middlewares.RequireGuest(c.store, http.HandlerFunc(c.InscriptionTraitement))).Methods("POST")
 }
 
 // Fonction permettant d'afficher la page formulaire d'inscription avec une gestion d'erreur
@@ -46,7 +50,13 @@ func (c *InscriptionController) InscriptionTraitement(w http.ResponseWriter, r *
 
 	// Vérification de la présence des données
 	if username == "" || email == "" || password == "" {
-		http.Redirect(w, r, "/inscription?invalid_data", http.StatusSeeOther)
+		http.Redirect(w, r, "/inscription?code=invalid_data", http.StatusSeeOther)
+		return
+	}
+
+	hashedPassword, errHash := bcrypt.GenerateFromPassword([]byte(password), 14)
+	if errHash != nil {
+		http.Redirect(w, r, "/inscription?code=invalid_password", http.StatusSeeOther)
 		return
 	}
 
@@ -55,7 +65,7 @@ func (c *InscriptionController) InscriptionTraitement(w http.ResponseWriter, r *
 		Role_id:  3,
 		Name:     username,
 		Email:    email,
-		Password: password,
+		Password: string(hashedPassword),
 	}
 
 	// Création de l'utilisateur via le service de création d'utilisateur
@@ -65,5 +75,5 @@ func (c *InscriptionController) InscriptionTraitement(w http.ResponseWriter, r *
 		return
 	}
 
-	http.Redirect(w, r, "/accueil", http.StatusMovedPermanently)
+	http.Redirect(w, r, "/connexion", http.StatusMovedPermanently)
 }

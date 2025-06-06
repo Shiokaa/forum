@@ -1,29 +1,33 @@
 package controllers
 
 import (
+	"forum/src/middlewares"
 	"forum/src/models"
 	"forum/src/services"
 	"html/template"
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/gorilla/sessions"
 )
 
 // Structure avec injection de service et template
 type AccueilController struct {
 	service  *services.TopicsServices
 	template *template.Template
+	store    *sessions.CookieStore
 }
 
 // Structure créant une liste de topics et users
 type AccueilData struct {
 	TopicsWithUsers []models.Topics_Join_Users
 	Error           bool
+	Authenticated   bool
 }
 
 // Fonction pour initialiser le controller et les injections
-func AccueilControllerInit(template *template.Template, service *services.TopicsServices) *AccueilController {
-	return &AccueilController{template: template, service: service}
+func AccueilControllerInit(template *template.Template, service *services.TopicsServices, store *sessions.CookieStore) *AccueilController {
+	return &AccueilController{template: template, service: service, store: store}
 }
 
 // Routeur pour mettre en place les routes d'accueil
@@ -35,6 +39,9 @@ func (c *AccueilController) AccueilRouter(r *mux.Router) {
 func (c *AccueilController) DisplayAccueil(w http.ResponseWriter, r *http.Request) {
 	// Récupération des variables
 	var data AccueilData
+
+	// Determine si l'utilisateur est connecté ou non
+	data.Authenticated = middlewares.SessionCheck(r, c.store)
 
 	// Vérification de la précense des données
 	code := r.FormValue("code")

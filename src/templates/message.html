@@ -17,7 +17,11 @@
             <a href="/accueil">Accueil</a>
             <a href="#">Catégories</a>
             <a href="#">Recherche</a>
+            {{if .Authenticated}}
+            <a href="/deconnexion">Déconnexion</a>
+            {{else}}
             <a href="/connexion">Connexion</a>
+            {{end}}
         </nav>
     </header>
 

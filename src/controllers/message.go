@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"forum/src/middlewares"
 	"forum/src/models"
 	"forum/src/services"
 	"html/template"
@@ -8,23 +9,26 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/gorilla/sessions"
 )
 
 // Structure avec injection de service et template
 type MessageController struct {
 	service  *services.MessagesServices
 	template *template.Template
+	store    *sessions.CookieStore
 }
 
 type MessageData struct {
-	Item    models.Topics_Join_Messages
-	Replies []models.Replies_Join_User
-	Error   bool
+	Item          models.Topics_Join_Messages
+	Replies       []models.Replies_Join_User
+	Error         bool
+	Authenticated bool
 }
 
 // Fonction pour initialiser le controller et les injections
-func MessageControllerInit(template *template.Template, service *services.MessagesServices) *MessageController {
-	return &MessageController{template: template, service: service}
+func MessageControllerInit(template *template.Template, service *services.MessagesServices, store *sessions.CookieStore) *MessageController {
+	return &MessageController{template: template, service: service, store: store}
 }
 
 // Routeur pour mettre en place les routes de message
@@ -35,6 +39,9 @@ func (c *MessageController) MessageRouter(r *mux.Router) {
 // Fonction permettant d'afficher la page formulaire d'inscription avec une gestion d'erreur
 func (c *MessageController) DisplayMessage(w http.ResponseWriter, r *http.Request) {
 	var data MessageData
+	
+	// Determine si l'utilisateur est connecté ou non
+	data.Authenticated = middlewares.SessionCheck(r, c.store)
 
 	// Gérer les codes d'erreur passés en paramètre
 	code := r.FormValue("code")

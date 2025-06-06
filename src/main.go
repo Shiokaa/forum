@@ -14,7 +14,8 @@ import (
 
 func main() {
 
-	configs.EnvInit() // Chargement des variables d'environnements
+	configs.EnvInit()              // Chargement des variables d'environnements
+	store := configs.SessionInit() // Chargement de la session
 
 	// Lancement de la base de donnée
 	db, dbErr := configs.DbInit()
@@ -34,11 +35,11 @@ func main() {
 	topicServices := services.TopicsServicesInit(db)      // Initialisation du service topic
 	messagesServices := services.MessagesServicesInit(db) // Initialisation du service message
 
-	inscriptionController := controllers.InscriptionControllerInit(templates, usersServices) // Initialisation du controller inscription
-	accueilController := controllers.AccueilControllerInit(templates, topicServices)         // Initialisation du controller accueil
-	topicController := controllers.TopicControllerInit(templates, topicServices)             // Initialisation du controller topic
-	messageController := controllers.MessageControllerInit(templates, messagesServices)      // Initialisation du controller message
-	connexionController := controllers.ConnexionControllerInit(templates)
+	inscriptionController := controllers.InscriptionControllerInit(templates, usersServices, store) // Initialisation du controller inscription
+	accueilController := controllers.AccueilControllerInit(templates, topicServices, store)         // Initialisation du controller accueil
+	topicController := controllers.TopicControllerInit(templates, topicServices, store)             // Initialisation du controller topic
+	messageController := controllers.MessageControllerInit(templates, messagesServices, store)      // Initialisation du controller message
+	connexionController := controllers.ConnexionControllerInit(templates, usersServices, store)     // Initialisation du controller connexion
 
 	router := mux.NewRouter() // Initialisation du router
 

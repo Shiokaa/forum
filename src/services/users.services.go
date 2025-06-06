@@ -21,7 +21,7 @@ func UsersServicesInit(db *sql.DB) *UsersServices {
 func (s *UsersServices) Create(user models.Users) (int, error) {
 	// Vérification de la précense des données
 	if user.Name == "" || user.Email == "" || user.Password == "" || user.Role_id < 0 {
-		return -1, fmt.Errorf(" Erreur ajout produit - Données manquantes ou invalides")
+		return -1, fmt.Errorf(" Erreur ajout user - Données manquantes ou invalides")
 	}
 
 	// Envoie des données vers le repositorie
@@ -31,4 +31,18 @@ func (s *UsersServices) Create(user models.Users) (int, error) {
 	}
 
 	return userId, nil
+}
+
+func (s *UsersServices) Connect(email string, password string) (models.Users, error) {
+
+	if email == "" || password == "" {
+		return models.Users{}, fmt.Errorf(" Erreur connection - Données manquantes ou invalides")
+	}
+
+	user, err := s.userRepositories.ConnectUser(email, password)
+	if err != nil {
+		return models.Users{}, err
+	}
+
+	return user, nil
 }
