@@ -1,6 +1,6 @@
 package models
 
-type Reply struct {
+type Replies struct {
 	Reply_id     int
 	Replay_to_id int
 	Content      string

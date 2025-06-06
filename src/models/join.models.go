@@ -13,8 +13,15 @@ type Topics_Join_Users_Forums struct {
 	Forums Forums
 }
 
+// Modele d'un join entre topics, messages et users
 type Topics_Join_Messages struct {
 	Topics   Topics
 	Messages Messages
 	Users    Users
+}
+
+// Modele d'un join entre une réponse et un user
+type Replies_Join_User struct {
+	Replies Replies
+	Users   Users
 }
