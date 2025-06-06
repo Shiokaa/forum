@@ -30,14 +30,15 @@ func main() {
 		log.Fatalf(" Récupération des templates impossible : %v", tempErr)
 	}
 
-	usersServices := services.UsersServicesInit(db)     // Initialisation du service user
-	topicServices := services.TopicsServicesInit(db)    // Initialisation du service topic
+	usersServices := services.UsersServicesInit(db)       // Initialisation du service user
+	topicServices := services.TopicsServicesInit(db)      // Initialisation du service topic
 	messagesServices := services.MessagesServicesInit(db) // Initialisation du service message
 
 	inscriptionController := controllers.InscriptionControllerInit(templates, usersServices) // Initialisation du controller inscription
 	accueilController := controllers.AccueilControllerInit(templates, topicServices)         // Initialisation du controller accueil
 	topicController := controllers.TopicControllerInit(templates, topicServices)             // Initialisation du controller topic
-	messageController := controllers.MessageControllerInit(templates, messagesServices)       // Initialisation du controller message
+	messageController := controllers.MessageControllerInit(templates, messagesServices)      // Initialisation du controller message
+	connexionController := controllers.ConnexionControllerInit(templates)
 
 	router := mux.NewRouter() // Initialisation du router
 
@@ -46,6 +47,7 @@ func main() {
 	accueilController.AccueilRouter(router)
 	topicController.TopicRouteur(router)
 	messageController.MessageRouter(router)
+	connexionController.ConnexionRouter(router)
 
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./assets")))) // Sert les fichiers static
 
