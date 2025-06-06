@@ -1,7 +1,7 @@
 /* style.css */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #dbeafe, #f0f9ff);
+    background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,68 +9,73 @@ body {
     margin: 0;
   }
   
-  form {
+  .container {
     background-color: #ffffff;
-    padding: 40px 30px;
+    padding: 40px 35px;
     border-radius: 10px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     width: 100%;
+    max-width: 450px;
+    box-sizing: border-box;
   }
   
   h2 {
     text-align: center;
     color: #1e3a8a;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    font-size: 26px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
   }
   
   label {
-    font-weight: bold;
+    font-weight: 600;
     color: #1e40af;
-    display: block;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
   }
   
   input[type="text"],
   input[type="email"],
   input[type="password"] {
-    width: 100%;
-    padding: 10px 12px;
-    margin-bottom: 20px;
+    padding: 10px 14px;
     border: 1px solid #cbd5e1;
     border-radius: 5px;
-    font-size: 14px;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    margin-bottom: 20px;
+    font-size: 15px;
+    transition: all 0.3s ease;
   }
   
   input[type="text"]:focus,
   input[type="email"]:focus,
   input[type="password"]:focus {
     border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.3);
     outline: none;
   }
   
   input[type="submit"] {
-    width: 100%;
     padding: 12px;
     background-color: #2563eb;
     color: white;
     border: none;
     border-radius: 5px;
     font-weight: bold;
-    font-size: 15px;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
   }
   
   input[type="submit"]:hover {
-    background-color: #1e40af;
+    background-color: #1d4ed8;
   }
   
   p {
     color: red;
-    margin-top: 15px;
     text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
   }
   
