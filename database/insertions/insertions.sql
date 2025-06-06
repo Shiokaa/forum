@@ -1,53 +1,40 @@
-USE forum_db;
-
 -- Rôles
-INSERT INTO roles (name) VALUES
-('admin'),
-('moderator'),
-('member');
+INSERT INTO roles (name) VALUES ('admin'), ('moderator'), ('user');
 
 -- Utilisateurs
 INSERT INTO users (role_id, name, email, password) VALUES
-(1, 'Alice Admin', 'alice@forum.com', 'hashed_password_1'),
-(2, 'Bob Moderator', 'bob@forum.com', 'hashed_password_2'),
-(3, 'Charlie Member', 'charlie@forum.com', 'hashed_password_3'),
-(3, 'Diana Member', 'diana@forum.com', 'hashed_password_4');
+(1, 'Alice Dupont', 'alice@example.com', 'hashed_pw1'),
+(2, 'Bob Martin', 'bob@example.com', 'hashed_pw2'),
+(3, 'Charlie Leroy', 'charlie@example.com', 'hashed_pw3');
 
 -- Catégories
 INSERT INTO categories (name, description) VALUES
-('Général', 'Discussions générales'),
-('Tech', 'Discussions technologiques'),
-('Jeux', 'Jeux vidéos et discussions liées');
+('Technologie', 'Discussions sur les nouveautés tech'),
+('Culture', 'Échanges autour de la culture générale');
 
 -- Forums
 INSERT INTO forums (category_id, name, description) VALUES
-(1, 'Présentations', 'Présentez-vous ici !'),
-(2, 'Programmation', 'Discutez de code et de dev ici.'),
-(3, 'Jeux PC', 'Pour les amateurs de jeux sur PC');
+(1, 'Développement Web', 'Frontend, Backend, Fullstack...'),
+(2, 'Littérature', 'Romans, poésie, essais...');
 
--- Sujets
+-- Topics
 INSERT INTO topics (forum_id, user_id, title, status) VALUES
-(1, 3, 'Salut tout le monde !', TRUE),
-(2, 1, 'Comment apprendre Python ?', TRUE),
-(3, 4, 'Votre jeu préféré ?', TRUE);
+(1, 1, 'Comment apprendre React ?', true),
+(2, 2, 'Vos romans préférés ?', true);
 
 -- Messages
 INSERT INTO messages (topic_id, user_id, content) VALUES
-(1, 3, 'Je m\'appelle Charlie, ravi d\'être ici.'),
-(2, 1, 'Commence par les bases, et pratique beaucoup.'),
-(3, 4, 'J\'adore The Witcher 3, et vous ?'),
-(3, 3, 'Moi je suis plutôt fan de Skyrim.');
+(1, 2, 'Tu peux commencer avec la doc officielle, elle est bien faite.'),
+(1, 3, 'Je recommande aussi des vidéos sur YouTube.'),
+(2, 1, 'J\'ai adoré "Le Comte de Monte-Cristo", un classique intemporel.');
 
 -- Feedbacks
 INSERT INTO feedbacks (user_id, message_id, type) VALUES
 (1, 1, 'like'),
-(2, 2, 'like'),
-(3, 3, 'dislike'),
-(4, 4, 'like');
+(3, 1, 'like'),
+(2, 3, 'dislike');
 
 -- Réponses aux messages
-INSERT INTO message_replies (reply_to_id, content) VALUES
-(1, 'Bienvenue Charlie ! Content de te voir ici.'),
-(2, 'Merci pour le conseil, je vais commencer avec les bases de Python.'),
-(3, 'The Witcher 3 est un excellent choix !'),
-(4, 'Skyrim est aussi un classique incontournable.');
+INSERT INTO message_replies (user_id, reply_to_id, content) VALUES
+(1, 1, 'Merci pour la recommandation, je vais tester !'),
+(3, 2, 'Oui les vidéos de "OpenClassrooms" sont top aussi.');

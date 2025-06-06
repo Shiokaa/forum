@@ -82,9 +82,11 @@ CREATE TABLE feedbacks (
 -- Reponses
 CREATE TABLE message_replies (
     reply_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NUL,
     reply_to_id INT NOT NULL,
     content TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-    FOREIGN KEY(reply_to_id) REFERENCES messages(message_id)
+    FOREIGN KEY(reply_to_id) REFERENCES messages(message_id),
+    FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
