@@ -82,7 +82,7 @@ CREATE TABLE feedbacks (
 -- Reponses
 CREATE TABLE message_replies (
     reply_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NUL,
+    user_id INT NOT NULL,
     reply_to_id INT NOT NULL,
     content TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
