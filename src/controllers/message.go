@@ -39,36 +39,27 @@ func (c *MessageController) MessageRouter(r *mux.Router) {
 // Fonction permettant d'afficher la page formulaire d'inscription avec une gestion d'erreur
 func (c *MessageController) DisplayMessage(w http.ResponseWriter, r *http.Request) {
 	var data MessageData
-	
+
 	// Determine si l'utilisateur est connecté ou non
 	data.Authenticated = middlewares.SessionCheck(r, c.store)
-
-	// Gérer les codes d'erreur passés en paramètre
-	code := r.FormValue("code")
-	if code == "invalid_id" || code == "item_not_found" {
-		data.Error = true
-		data.Item = models.Topics_Join_Messages{}
-		c.template.ExecuteTemplate(w, "topic", data)
-		return
-	}
 
 	// Récupération de l'ID depuis les paramètres
 	idString := r.FormValue("id")
 	idInt, errConv := strconv.Atoi(idString)
 	if errConv != nil {
-		http.Redirect(w, r, "/topic?code=invalid_id", http.StatusSeeOther)
+		http.Redirect(w, r, "/error?code=404&message=invalid_id", http.StatusSeeOther)
 		return
 	}
 
 	item, errMessages := c.service.ReadMessagesId(idInt)
 	if errMessages != nil {
-		http.Redirect(w, r, "/topic?code=item_not_found", http.StatusSeeOther)
+		http.Redirect(w, r, "/error?code=404&message=item_not_found", http.StatusSeeOther)
 		return
 	}
 
 	items, errReplies := c.service.ReadRepliesId(idInt)
 	if errReplies != nil {
-		http.Redirect(w, r, "/topic?code=item_not_found", http.StatusSeeOther)
+		http.Redirect(w, r, "/error?code=404&message=item_not_found", http.StatusSeeOther)
 		return
 	}
 

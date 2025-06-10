@@ -1,0 +1,19 @@
+{{define "error"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erreur - Forum</title>
+    <link rel="stylesheet" href="/static/styles/error.css">
+</head>
+
+    <body>
+        <div>
+            <h1>Erreur {{.Code}} </h1>
+            <p>{{.Message}}</p>
+            <a href="/accueil">Retour à l'accueil</a>
+        </div>
+    </body>
+
+{{end}}

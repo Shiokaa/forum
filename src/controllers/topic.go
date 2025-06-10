@@ -44,35 +44,25 @@ func (c *TopicController) DisplayTopic(w http.ResponseWriter, r *http.Request) {
 	// Determine si l'utilisateur est connecté ou non
 	data.Authenticated = middlewares.SessionCheck(r, c.store)
 
-	// Gérer les codes d'erreur passés en paramètre
-	code := r.FormValue("code")
-	if code == "invalid_id" || code == "item_not_found" || code == "messages_not_found" {
-		data.Error = true
-		data.Item = models.Topics_Join_Users_Forums{}
-		data.Messages = []models.Topics_Join_Messages{}
-		c.template.ExecuteTemplate(w, "topic", data)
-		return
-	}
-
 	// Récupération de l'ID depuis les paramètres
 	idString := r.FormValue("id")
 	idInt, errConv := strconv.Atoi(idString)
 	if errConv != nil {
-		http.Redirect(w, r, "/topic?code=invalid_id", http.StatusSeeOther)
+		http.Redirect(w, r, "/error?code=404&message=invalid_id", http.StatusSeeOther)
 		return
 	}
 
 	// Lecture du topic par ID
 	item, errReadId := c.service.ReadId(idInt)
 	if errReadId != nil {
-		http.Redirect(w, r, "/topic?code=item_not_found", http.StatusSeeOther)
+		http.Redirect(w, r, "/error?code=404&message=item_not_found", http.StatusSeeOther)
 		return
 	}
 
 	// Lecture des messages par ID
 	messages, errReadMessages := c.service.ReadMessages(idInt)
 	if errReadMessages != nil {
-		http.Redirect(w, r, "/topic?code=messages_not_found", http.StatusSeeOther)
+		http.Redirect(w, r, "/error?code=404&message=messages_not_found", http.StatusSeeOther)
 		return
 	}
 
