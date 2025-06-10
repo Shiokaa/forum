@@ -56,14 +56,14 @@ func (c *AccueilController) DisplayAccueil(w http.ResponseWriter, r *http.Reques
 	if code != "" {
 		data.Error = true
 		data.TopicsWithUsers = []models.Topics_Join_Users{}
-		c.template.ExecuteTemplate(w, "/accueil", data)
+		c.template.ExecuteTemplate(w, "/", data)
 		return
 	}
 
 	// Ici on récupére les données de la base de donnée
 	items, errData := c.service.Display()
 	if errData != nil {
-		http.Redirect(w, r, "/accueil?code=invalid_data", http.StatusSeeOther)
+		http.Redirect(w, r, "/error?code=404&message=invalid_data", http.StatusSeeOther)
 	}
 
 	// Récupération des données pour les envoyés dans l'html
