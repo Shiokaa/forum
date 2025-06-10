@@ -7,8 +7,5 @@ import (
 )
 
 func SessionInit() *sessions.CookieStore {
-
-	store := sessions.NewCookieStore([]byte(os.Getenv("COOKIE_SECRET")))
-
-	return store
+	return sessions.NewCookieStore([]byte(os.Getenv("COOKIE_SECRET")))
 }

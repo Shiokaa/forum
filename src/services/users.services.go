@@ -44,5 +44,7 @@ func (s *UsersServices) Connect(email string, password string) (models.Users, er
 		return models.Users{}, err
 	}
 
+	fmt.Println(user)
+
 	return user, nil
 }
