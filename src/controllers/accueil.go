@@ -23,6 +23,7 @@ type AccueilData struct {
 	TopicsWithUsers []models.Topics_Join_Users
 	Error           bool
 	Authenticated   bool
+	User            models.Users
 }
 
 // Fonction pour initialiser le controller et les injections
@@ -42,6 +43,12 @@ func (c *AccueilController) DisplayAccueil(w http.ResponseWriter, r *http.Reques
 
 	// Determine si l'utilisateur est connecté ou non
 	data.Authenticated = middlewares.SessionCheck(r, c.store)
+
+	session, _ := c.store.Get(r, "session")
+
+	if data.Authenticated {
+		data.User.User_id = session.Values["user_id"].(int)
+	}
 
 	// Vérification de la précense des données
 	code := r.FormValue("code")
