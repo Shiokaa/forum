@@ -45,6 +45,10 @@ func main() {
 
 	router := mux.NewRouter() // Initialisation du router
 
+	router.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/error?code=404&message=page_not_found", http.StatusSeeOther) // Redirection vers la page d'erreur si la page n'existe pas
+	})
+
 	// Routage des différents controllers
 	inscriptionController.InsciptionRouter(router)
 	accueilController.AccueilRouter(router)
