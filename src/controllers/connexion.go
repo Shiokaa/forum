@@ -53,12 +53,13 @@ func (c *ConnexionControllers) ConnexionTraitement(w http.ResponseWriter, r *htt
 
 	session, _ := c.store.Get(r, "session")
 
-	_, err := c.service.Connect(email, password)
+	user, err := c.service.Connect(email, password)
 	if err != nil {
 		http.Redirect(w, r, "/connexion?code=invalid_data", http.StatusSeeOther)
 		return
 	}
 
+	session.Values["user_id"] = user.User_id
 	session.Values["authenticated"] = true
 	session.Save(r, w)
 

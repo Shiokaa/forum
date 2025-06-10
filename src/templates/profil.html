@@ -1,12 +1,12 @@
-{{define "accueil"}}
+{{define "profil"}}
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Forum</title>
-    <link rel="stylesheet" href="/static/styles/accueil.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil de {{.User.Name}}</title>
+    <link rel="stylesheet" href="/static/styles/profil.css">
 </head>
 
 <body>
@@ -18,7 +18,7 @@
             <a href="#">Catégories</a>
             <a href="#">Recherche</a>
             {{if .Authenticated}}
-            <a href="/profil?id={{.User.User_id}}">
+            <a href="/profil?id={{.User.User_id}}" class="active">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                     fill="#fcebf1">
                     <path
@@ -32,16 +32,23 @@
     </header>
 
     <main>
-        {{if .Error}}
-        <p>Erreur lors de la récupération des données</p>
-        {{else}}
-        {{range .TopicsWithUsers}}
-        <div class="thread">
-            <a href="/topic?id={{.Topics.Topic_id}}">{{.Topics.Title}}</a>
-            <p>Posté par <strong>{{.Users.Name}}</strong> {{.Topics.Created_at}}</p>
+        <div class="profile-container">
+            <div class="profile-header">
+                <h1>Profil de {{.User.Name}}</h1>
+            </div>
+            <div class="profile-details">
+                <h2>Informations</h2>
+                <p><strong>Nom d'utilisateur :</strong> {{.User.Name}}</p>
+                <p><strong>Adresse e-mail :</strong> {{.User.Email}}</p>
+                <p><strong>Membre depuis le :</strong> {{.User.Created_at}}</p>
+                <p><strong>Dernière mise à jour du profil :</strong> {{.User.Updated_at}}</p>
+            </div>
+
+            <div class="profile-activity">
+                <h2>Activité sur le forum</h2>
+                <p>Ici, vous pourriez afficher les sujets créés et les messages postés par l'utilisateur.</p>
+            </div>
         </div>
-        {{end}}
-        {{end}}
     </main>
 
     <footer>

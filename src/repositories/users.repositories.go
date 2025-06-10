@@ -47,12 +47,12 @@ func (r *UsersRepositories) ConnectUser(email string, password string) (models.U
 	var user models.Users
 
 	query := `
-	SELECT user_id, role_id, name, email, password, created_at, updated_at
+	SELECT user_id, password
 	FROM users
 	WHERE email = ?
 	`
 
-	sqlErr := r.db.QueryRow(query, email).Scan(&user.User_Id, &user.Role_id, &user.Name, &user.Email, &user.Password, &user.Created_at, &user.Updated_at)
+	sqlErr := r.db.QueryRow(query, email).Scan(&user.User_id, &user.Password)
 	if sqlErr != nil {
 		if sqlErr == sql.ErrNoRows {
 			return models.Users{}, nil
@@ -63,6 +63,26 @@ func (r *UsersRepositories) ConnectUser(email string, password string) (models.U
 	hashedErr := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if hashedErr != nil {
 		return models.Users{}, errors.New("identifiants invalides")
+	}
+
+	return user, nil
+}
+
+func (r *UsersRepositories) GetUserById(id int) (models.Users, error) {
+	var user models.Users
+
+	query := `
+	SELECT user_id, role_id, name, email, password, created_at, updated_at
+	FROM users
+	WHERE user_id = ?
+	`
+
+	sqlErr := r.db.QueryRow(query, id).Scan(&user.User_id, &user.Role_id, &user.Name, &user.Email, &user.Password, &user.Created_at, &user.Updated_at)
+	if sqlErr != nil {
+		if sqlErr == sql.ErrNoRows {
+			return models.Users{}, nil
+		}
+		return models.Users{}, fmt.Errorf(" Erreur récupération item - Erreur : \n\t %s", sqlErr.Error())
 	}
 
 	return user, nil

@@ -44,7 +44,18 @@ func (s *UsersServices) Connect(email string, password string) (models.Users, er
 		return models.Users{}, err
 	}
 
-	fmt.Println(user)
-
 	return user, nil
+}
+
+func (s *UsersServices) ReadId(idUser int) (models.Users, error) {
+	if idUser < 1 {
+		return models.Users{}, fmt.Errorf(" Erreur récupération du topic - identifiant invalide : %d", idUser)
+	}
+
+	topic, errTopic := s.userRepositories.GetUserById(idUser)
+	if errTopic != nil {
+		return models.Users{}, errTopic
+	}
+
+	return topic, nil
 }
