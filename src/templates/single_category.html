@@ -1,16 +1,14 @@
-{{define "profil"}}
+{{define "single_category"}}
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil de {{.User.Name}}</title>
-    <link rel="stylesheet" href="/static/styles/profil.css">
+    <title>{{.Category.Name}} - Forum</title>
+    <link rel="stylesheet" href="/static/styles/single_category.css">
 </head>
 
 <body>
-
     <header>
         <div class="logo"><strong>ForumXYZ</strong></div>
         <nav>
@@ -30,26 +28,41 @@
             {{end}}
         </nav>
     </header>
-    {{template "breadcrumbs" .}}
-    <main>
-        <div class="profile-container">
-            <div class="profile-header">
-                <h1>Profil de {{.User.Name}}</h1>
-            </div>
-            <div class="profile-details">
-                <h2>Informations</h2>
-                <p><strong>Nom d'utilisateur :</strong> {{.User.Name}}</p>
-                <p><strong>Adresse e-mail :</strong> {{.User.Email}}</p>
-                <p><strong>Membre depuis le :</strong> {{.CreatedAtFormatted}}</p>
-                <p><strong>Dernière mise à jour du profil :</strong> {{.UpdatedAtFormatted}}</p>
-            </div>
 
-            <div class="profile-activity">
-                <h2>Activité sur le forum</h2>
-                <p>Ici, vous pourriez afficher les sujets créés et les messages postés par l'utilisateur.</p>
+    {{template "breadcrumbs" .}}
+
+    <main class="page-container">
+        <header class="category-header">
+            <h1>{{.Category.Name}}</h1>
+            <p>{{.Category.Description}}</p>
+        </header>
+
+        <div class="layout-container">
+            <div class="forums-column">
+                <h2>Forums</h2>
+                <div class="forums-list">
+                    {{range .Forums}}
+                    <a href="/forum?id={{.Forum_id}}" class="forum-card">
+                        <h3>{{.Name}}</h3>
+                        <p>{{.Description}}</p>
+                    </a>
+                    {{else}}
+                    <p>Aucun forum dans cette catégorie.</p>
+                    {{end}}
+                </div>
             </div>
-            <div class="profile-deconnection">
-                <a href="/deconnexion">Déconnexion</a>
+            <div class="topics-column">
+                <h2>Derniers Topics</h2>
+                <div class="topics-list">
+                    {{range .Topics}}
+                    <div class="topic-item">
+                        <a href="/topic?id={{.Topics.Topic_id}}">{{.Topics.Title}}</a>
+                        <span>par {{.Users.Name}} le {{.CreatedAtFormatted}}</span>
+                    </div>
+                    {{else}}
+                    <p>Aucun topic récent.</p>
+                    {{end}}
+                </div>
             </div>
         </div>
     </main>
@@ -61,7 +74,6 @@
             <a href="#">Politique de confidentialité</a>
         </p>
     </footer>
-
 </body>
 
 </html>

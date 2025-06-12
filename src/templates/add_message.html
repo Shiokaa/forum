@@ -1,16 +1,15 @@
-{{define "profil"}}
+{{define "addmessage"}}
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil de {{.User.Name}}</title>
-    <link rel="stylesheet" href="/static/styles/profil.css">
+    <title>Répondre au Topic - Forum</title>
+    <link rel="stylesheet" href="/static/styles/reponse.css">
 </head>
 
 <body>
-
     <header>
         <div class="logo"><strong>ForumXYZ</strong></div>
         <nav>
@@ -18,7 +17,7 @@
             <a href="/categories">Catégories</a>
             <a href="#">Recherche</a>
             {{if .Authenticated}}
-            <a href="/profil?id={{.User.User_id}}" class="active">
+            <a href="/profil?id={{.User_id}}" class="active">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                     fill="#fcebf1">
                     <path
@@ -32,25 +31,18 @@
     </header>
     {{template "breadcrumbs" .}}
     <main>
-        <div class="profile-container">
-            <div class="profile-header">
-                <h1>Profil de {{.User.Name}}</h1>
-            </div>
-            <div class="profile-details">
-                <h2>Informations</h2>
-                <p><strong>Nom d'utilisateur :</strong> {{.User.Name}}</p>
-                <p><strong>Adresse e-mail :</strong> {{.User.Email}}</p>
-                <p><strong>Membre depuis le :</strong> {{.CreatedAtFormatted}}</p>
-                <p><strong>Dernière mise à jour du profil :</strong> {{.UpdatedAtFormatted}}</p>
-            </div>
+        <div class="container">
+            <form action="/addmessage/traitement?topic_id={{.Topic_id}}" method="post">
+                <div>
+                    <label for="content">Votre message :</label><br>
+                    <textarea id="content" name="content" rows="8" cols="60" placeholder="Écrivez votre message ici..."
+                        required></textarea>
+                </div>
 
-            <div class="profile-activity">
-                <h2>Activité sur le forum</h2>
-                <p>Ici, vous pourriez afficher les sujets créés et les messages postés par l'utilisateur.</p>
-            </div>
-            <div class="profile-deconnection">
-                <a href="/deconnexion">Déconnexion</a>
-            </div>
+                <div>
+                    <button type="submit">Envoyer le message</button>
+                </div>
+            </form>
         </div>
     </main>
 
@@ -61,7 +53,6 @@
             <a href="#">Politique de confidentialité</a>
         </p>
     </footer>
-
 </body>
 
 </html>

@@ -69,3 +69,25 @@ func (s *MessagesServices) CreateMessage(message models.Messages) (int, error) {
 
 	return messageId, nil
 }
+
+// GetTotalTopicsCount transmet l'appel pour compter le nombre total de topics.
+func (s *TopicsServices) GetTotalTopicsCount() (int, error) {
+	count, err := s.topicsRepositories.GetTotalTopicsCount()
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}
+
+// GetPaginatedTopics transmet l'appel pour récupérer les topics de manière paginée.
+func (s *TopicsServices) GetPaginatedTopics(offset, limit int) ([]models.Topics_Join_Users, error) {
+	items, err := s.topicsRepositories.GetPaginatedTopics(offset, limit)
+	if err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+func (s *TopicsServices) GetByCategoryID(categoryID int, limit int) ([]models.Topics_Join_Users, error) {
+	return s.topicsRepositories.GetByCategoryID(categoryID, limit)
+}

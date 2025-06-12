@@ -189,7 +189,8 @@ h2 {
   font-size: 0.9em;
 }
 
-.message-meta-topic .message-author {
+.message-meta-topic,
+.message-author {
   font-weight: bold;
   color: #524c4e;
 }

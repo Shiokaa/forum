@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"forum/src/models"
+	"log"
 )
 
 // Structure permettant l'injection de la base de donnée
@@ -80,4 +81,31 @@ func (r *MessagesRepositories) CreateMessage(message models.Messages) (int, erro
 	}
 
 	return int(id), nil
+}
+
+func (r *MessagesRepositories) GetRecentMessages(limit int) ([]models.Topics_Join_Messages, error) {
+	var items []models.Topics_Join_Messages
+	query := `
+    SELECT m.message_id, m.content, m.created_at, u.name, t.title, t.topic_id
+    FROM messages AS m
+    JOIN users AS u ON u.user_id = m.user_id
+    JOIN topics AS t ON m.topic_id = t.topic_id
+    ORDER BY m.created_at DESC
+    LIMIT ?
+    `
+	rows, err := r.db.Query(query, limit)
+	if err != nil {
+		return nil, fmt.Errorf("échec de la requête pour les messages récents : %w", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var item models.Topics_Join_Messages
+		if err := rows.Scan(&item.Messages.Message_id, &item.Messages.Content, &item.Messages.Created_at, &item.Users.Name, &item.Topics.Title, &item.Topics.Topic_id); err != nil {
+			log.Printf("Erreur de scan pour un message récent : %v", err)
+			continue
+		}
+		items = append(items, item)
+	}
+	return items, nil
 }

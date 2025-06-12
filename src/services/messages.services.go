@@ -62,3 +62,17 @@ func (s *MessagesServices) CreatedReply(reply models.Replies_Joins_User_Message)
 
 	return userId, nil
 }
+
+// DisplayRecent transmet l'appel pour récupérer les messages les plus récents.
+func (s *MessagesServices) DisplayRecent(limit int) ([]models.Topics_Join_Messages, error) {
+	if limit <= 0 {
+		return nil, fmt.Errorf("la limite doit être un nombre positif")
+	}
+
+	items, err := s.MessageRepositories.GetRecentMessages(limit)
+	if err != nil {
+		return nil, err
+	}
+
+	return items, nil
+}

@@ -41,3 +41,9 @@ type Breadcrumb struct {
 	Name string
 	URL  string
 }
+
+// Modele pour regrouper une catégorie et ses forums
+type CategoryWithForums struct {
+	Categories Categories
+	Forums     []Forums
+}

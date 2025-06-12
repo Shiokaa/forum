@@ -109,3 +109,70 @@ func (r *TopicsRepositories) GetTopicWithMessage(id int) ([]models.Topics_Join_M
 
 }
 
+func (r *TopicsRepositories) GetPaginatedTopics(offset, limit int) ([]models.Topics_Join_Users, error) {
+	var items []models.Topics_Join_Users
+	query := `
+    SELECT t.topic_id, t.title, t.created_at, u.name
+    FROM topics AS t
+    JOIN users AS u ON u.user_id = t.user_id
+	ORDER BY t.created_at DESC
+	LIMIT ? OFFSET ?
+    `
+	rows, err := r.db.Query(query, limit, offset)
+	// ... (le reste de la fonction est similaire à GetTopicsWithCreators)
+	if err != nil {
+		return items, fmt.Errorf(" échec de la requête SQL : %w", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var item models.Topics_Join_Users
+
+		if err := rows.Scan(&item.Topics.Topic_id, &item.Topics.Title, &item.Topics.Created_at, &item.Users.Name); err != nil {
+			log.Printf(" Erreur de scan topics : %v", err)
+			continue
+		}
+		items = append(items, item)
+	}
+	return items, nil
+}
+
+// GetTotalTopicsCount compte le nombre total de topics.
+func (r *TopicsRepositories) GetTotalTopicsCount() (int, error) {
+	var count int
+	query := "SELECT COUNT(topic_id) FROM topics"
+	err := r.db.QueryRow(query).Scan(&count)
+	if err != nil {
+		return 0, fmt.Errorf("échec du comptage des topics : %w", err)
+	}
+	return count, nil
+}
+
+// GetByCategoryID récupère les derniers topics pour un ID de catégorie donné.
+func (r *TopicsRepositories) GetByCategoryID(categoryID int, limit int) ([]models.Topics_Join_Users, error) {
+	var items []models.Topics_Join_Users
+	query := `
+    SELECT t.topic_id, t.title, t.created_at, u.name
+    FROM topics AS t
+    JOIN users AS u ON u.user_id = t.user_id
+    JOIN forums AS f ON f.forum_id = t.forum_id
+    WHERE f.category_id = ?
+    ORDER BY t.created_at DESC
+    LIMIT ?`
+	rows, err := r.db.Query(query, categoryID, limit)
+	// ... (la logique de boucle et de scan est la même que dans GetPaginatedTopics)
+	if err != nil {
+		return items, fmt.Errorf(" échec de la requête SQL : %w", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var item models.Topics_Join_Users
+		if err := rows.Scan(&item.Topics.Topic_id, &item.Topics.Title, &item.Topics.Created_at, &item.Users.Name); err != nil {
+			log.Printf(" Erreur de scan topics : %v", err)
+			continue
+		}
+		items = append(items, item)
+	}
+	return items, nil
+}

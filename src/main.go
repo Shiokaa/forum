@@ -34,16 +34,19 @@ func main() {
 	usersServices := services.UsersServicesInit(db)       // Initialisation du service user
 	topicServices := services.TopicsServicesInit(db)      // Initialisation du service topic
 	messagesServices := services.MessagesServicesInit(db) // Initialisation du service message
+	categoriesServices := services.CategoriesServicesInit(db)
+	forumsServices := services.ForumsServicesInit(db)
 
-	inscriptionController := controllers.InscriptionControllerInit(templates, usersServices, store) // Initialisation du controller inscription
-	accueilController := controllers.AccueilControllerInit(templates, topicServices, store)         // Initialisation du controller accueil
-	topicController := controllers.TopicControllerInit(templates, topicServices, store)             // Initialisation du controller topic
-	messageController := controllers.MessageControllerInit(templates, messagesServices, store)      // Initialisation du controller message
-	connexionController := controllers.ConnexionControllerInit(templates, usersServices, store)     // Initialisation du controller connexion
+	inscriptionController := controllers.InscriptionControllerInit(templates, usersServices, store)                               // Initialisation du controller inscription
+	accueilController := controllers.AccueilControllerInit(templates, topicServices, categoriesServices, messagesServices, store) // Initialisation du controller accueil
+	topicController := controllers.TopicControllerInit(templates, topicServices, store)                                           // Initialisation du controller topic
+	messageController := controllers.MessageControllerInit(templates, messagesServices, store)                                    // Initialisation du controller message
+	connexionController := controllers.ConnexionControllerInit(templates, usersServices, store)                                   // Initialisation du controller connexion
 	profilController := controllers.ProfilControllerInit(templates, usersServices, store)
 	errorController := controllers.ErrorControllerInit(templates)
 	reponseController := controllers.RepliesControllerInit(templates, messagesServices, store)
 	addMessageController := controllers.AddMessageControllerInit(templates, messagesServices, store)
+	categoryController := controllers.CategoryControllerInit(templates, store, categoriesServices, forumsServices, topicServices)
 
 	router := mux.NewRouter() // Initialisation du router
 
@@ -61,6 +64,7 @@ func main() {
 	errorController.ErrorRouter(router)
 	reponseController.RepliesRouter(router)
 	addMessageController.AddMessageRouter(router)
+	categoryController.CategoryRouter(router)
 
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./assets")))) // Sert les fichiers static
 

@@ -5,20 +5,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Forum</title>
+    <title>Forum - Accueil</title>
     <link rel="stylesheet" href="/static/styles/accueil.css">
 </head>
 
 <body>
-
     <header>
         <div class="logo"><strong>ForumXYZ</strong></div>
         <nav>
             <a href="/">Accueil</a>
-            <a href="#">Catégories</a>
+            <a href="/categories">Catégories</a>
             <a href="#">Recherche</a>
             {{if .Authenticated}}
-            <a href="/profil?id={{.User.User_id}}">
+            <a href="/profil?id={{.User.User_id}}" class="active">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                     fill="#fcebf1">
                     <path
@@ -31,18 +30,66 @@
         </nav>
     </header>
     {{template "breadcrumbs" .}}
-    <main>
-        {{if .Error}}
-        <p>Erreur lors de la récupération des données</p>
-        {{else}}
-        {{range .TopicsWithUsers}}
-        <div class="thread">
-            <a href="/topic?id={{.Topics.Topic_id}}">{{.Topics.Title}}</a>
-            <p>Posté par <strong>{{.Users.Name}}</strong> {{.CreatedAtFormatted}}</p>
-        </div>
-        {{end}}
-        {{end}}
-    </main>
+    <div class="main-container">
+        <aside class="sidebar-left">
+            <div class="sidebar-widget">
+                <h3 class="widget-title">Catégories</h3>
+                <ul class="category-list">
+                    {{range .Categories}}
+                    <li><a href="/categorie?id={{.Category_id}}">{{.Name}}</a></li>
+                    {{else}}
+                    <li>Aucune catégorie trouvée.</li>
+                    {{end}}
+                </ul>
+            </div>
+        </aside>
+        <main class="content-main">
+            <h2 class="content-title">Derniers Topics</h2>
+            <div class="topics-list">
+                {{range .Topics}}
+                <div class="thread">
+                    <div class="thread-main">
+                        <a href="/topic?id={{.Topics.Topic_id}}">{{.Topics.Title}}</a>
+                        <p>Posté par <strong>{{.Users.Name}}</strong> le {{.CreatedAtFormatted}}</p>
+                    </div>
+                </div>
+                {{else}}
+                <p>Aucun topic à afficher.</p>
+                {{end}}
+            </div>
+
+            {{if gt .Pagination.TotalPages 1}}
+            <nav class="pagination">
+                {{if .Pagination.HasPrev}}
+                <a href="/?page={{.Pagination.PrevPage}}" class="page-link">&laquo; Précédent</a>
+                {{end}}
+
+                <span class="page-info">Page {{.Pagination.CurrentPage}} sur {{.Pagination.TotalPages}}</span>
+
+                {{if .Pagination.HasNext}}
+                <a href="/?page={{.Pagination.NextPage}}" class="page-link">Suivant &raquo;</a>
+                {{end}}
+            </nav>
+            {{end}}
+        </main>
+
+        <aside class="sidebar-right">
+            <div class="sidebar-widget">
+                <h3 class="widget-title">Activité Récente</h3>
+                <ul class="recent-messages-list">
+                    {{range .RecentMessages}}
+                    <li>
+                        <a href="/message?id={{.Messages.Message_id}}">
+                            <strong>{{.Users.Name}}</strong> a répondu sur "<i>{{.Topics.Title}}</i>"
+                        </a>
+                    </li>
+                    {{else}}
+                    <li>Aucune activité récente.</li>
+                    {{end}}
+                </ul>
+            </div>
+        </aside>
+    </div>
 
     <footer>
         <p>
