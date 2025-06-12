@@ -33,6 +33,7 @@ type TopicData struct {
 	Authenticated      bool
 	CreatedAtFormatted string
 	UpdatedAtFormatted string
+	Breadcrumbs        []models.Breadcrumb
 }
 
 // Routeur pour mettre en place les routes d'inscription
@@ -73,6 +74,16 @@ func (c *TopicController) DisplayTopic(w http.ResponseWriter, r *http.Request) {
 	if errReadMessages != nil {
 		http.Redirect(w, r, "/error?code=404&message=messages_not_found", http.StatusSeeOther)
 		return
+	}
+
+	for i := range messages {
+		formatted, _ := utilitaire.ConvertTime(messages[i].Messages.Created_at, messages[i].Messages.Updated_at, w, r)
+		messages[i].CreatedAtFormatted = formatted
+	}
+
+	data.Breadcrumbs = []models.Breadcrumb{
+		{Name: "Accueil", URL: "/"},
+		{Name: item.Topics.Title, URL: ""},
 	}
 
 	// Affichage du topic

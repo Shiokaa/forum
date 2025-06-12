@@ -51,6 +51,48 @@ nav a:last-child {
   justify-content: center;
 }
 
+.breadcrumb-container {
+  background-color: #fcebf1;
+  padding: 0.75rem 1rem;
+  max-width: 960px;
+  margin: 0 auto;
+  border-radius: 5px;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: ">";
+  display: inline-block;
+  padding: 0 0.5rem;
+  color: #a78e97;
+}
+
+.breadcrumb-item a {
+  color: #e91e63;
+  text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+  color: #524c4e;
+  font-weight: bold;
+}
+
 main {
   padding: 2em 1em;
   max-width: 960px;
@@ -137,6 +179,23 @@ h2 {
   font-weight: bold;
   color: #524c4e;
   margin-bottom: 0.5em;
+}
+
+.message-meta-topic {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8em;
+  font-size: 0.9em;
+}
+
+.message-meta-topic .message-author {
+  font-weight: bold;
+  color: #524c4e;
+}
+
+.message-meta-topic .message-date {
+  color: #a78e97;
 }
 
 .message-content p {

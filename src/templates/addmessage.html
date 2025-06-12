@@ -29,7 +29,7 @@
             {{end}}
         </nav>
     </header>
-
+    {{template "breadcrumbs" .}}
     <main>
         <div class="container">
             <form action="/addmessage/traitement?topic_id={{.Topic_id}}" method="post">

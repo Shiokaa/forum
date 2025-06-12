@@ -30,7 +30,7 @@
             {{end}}
         </nav>
     </header>
-
+    {{template "breadcrumbs" .}}
     <main>
         {{if .Error}}
         <p>Erreur lors de la récupération des données</p>

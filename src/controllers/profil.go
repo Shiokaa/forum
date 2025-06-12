@@ -25,6 +25,7 @@ type ProfilData struct {
 	Authenticated      bool
 	CreatedAtFormatted string
 	UpdatedAtFormatted string
+	Breadcrumbs        []models.Breadcrumb
 }
 
 // Fonction pour initialiser le controller et les injections
@@ -51,6 +52,11 @@ func (c *ProfilControllers) DisplayProfil(w http.ResponseWriter, r *http.Request
 
 	user, _ := c.service.ReadId(idInt)
 	data.User = user
+
+	data.Breadcrumbs = []models.Breadcrumb{
+		{Name: "Accueil", URL: "/"},
+		{Name: "Profil de " + user.Name, URL: ""},
+	}
 
 	created_at, updated_at := utilitaire.ConvertTime(data.User.Created_at, data.User.Updated_at, w, r)
 

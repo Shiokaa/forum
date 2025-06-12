@@ -31,6 +31,7 @@
         </nav>
     </header>
 
+    {{template "breadcrumbs" .}}
     <main>
         {{if .Error}}
         <h2>Une erreur est survenue lors du chargement du topic.</h2>
@@ -53,8 +54,9 @@
                 {{range .Messages}}
                 <a href="/message?id={{.Messages.Message_id}}">
                     <article class="topic-content">
-                        <div class="message-author">
-                            <p>{{.Users.Name}}</p>
+                        <div class="message-meta-topic">
+                            <span class="message-author">{{.Users.Name}}</span>
+                            <span class="message-date">{{.CreatedAtFormatted}}</span>
                         </div>
                         <div class="message-content">
                             <p>{{.Messages.Content}}</p>

@@ -26,6 +26,7 @@ type MessageData struct {
 	Error              bool
 	Authenticated      bool
 	CreatedAtFormatted string
+	Breadcrumbs        []models.Breadcrumb
 }
 
 // Fonction pour initialiser le controller et les injections
@@ -62,6 +63,12 @@ func (c *MessageController) DisplayMessage(w http.ResponseWriter, r *http.Reques
 	if errMessages != nil {
 		http.Redirect(w, r, "/error?code=404&message=item_not_found", http.StatusSeeOther)
 		return
+	}
+
+	data.Breadcrumbs = []models.Breadcrumb{
+		{Name: "Accueil", URL: "/"},
+		{Name: item.Topics.Title, URL: "/topic?id=" + strconv.Itoa(item.Topics.Topic_id)},
+		{Name: "Message", URL: ""},
 	}
 
 	items, errReplies := c.service.ReadRepliesId(idInt)

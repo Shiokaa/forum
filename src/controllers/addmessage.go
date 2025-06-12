@@ -23,6 +23,7 @@ type AddMessageData struct {
 	Topic_id      string
 	Authenticated bool
 	User_id       int
+	Breadcrumbs   []models.Breadcrumb
 }
 
 // Fonction pour initialiser le controller et les injections
@@ -44,6 +45,11 @@ func (c *AddMessageController) DisplayAddMessage(w http.ResponseWriter, r *http.
 	data.Authenticated = true
 	data.User_id = session.Values["user_id"].(int)
 	data.Topic_id = r.FormValue("topic_id")
+
+	data.Breadcrumbs = []models.Breadcrumb{
+		{Name: "Accueil", URL: "/"},
+		{Name: "Répondre au Topic", URL: ""},
+	}
 
 	c.template.ExecuteTemplate(w, "addmessage", data)
 }

@@ -23,6 +23,7 @@ type RepliesData struct {
 	Item          models.Replies_Joins_User_Message
 	Message_id    string
 	Authenticated bool
+	Breadcrumbs   []models.Breadcrumb
 }
 
 // Fonction pour initialiser le controller et les injections
@@ -46,6 +47,21 @@ func (c *RepliesController) DisplayReplies(w http.ResponseWriter, r *http.Reques
 	data.Item.Users.User_id = session.Values["user_id"].(int)
 
 	message_id := r.FormValue("id")
+	messageIdInt, _ := strconv.Atoi(message_id)
+
+	messageDetails, err := c.service.ReadMessagesId(messageIdInt)
+	if err != nil {
+		http.Redirect(w, r, "/error?code=404&message=item_not_found", http.StatusSeeOther)
+		return
+	}
+
+	data.Breadcrumbs = []models.Breadcrumb{
+		{Name: "Accueil", URL: "/"},
+		{Name: messageDetails.Topics.Title, URL: "/topic?id=" + strconv.Itoa(messageDetails.Topics.Topic_id)},
+		{Name: "Message", URL: "/message?id=" + message_id},
+		{Name: "Répondre", URL: ""},
+	}
+
 	data.Message_id = message_id
 
 	c.template.ExecuteTemplate(w, "reponse", data)

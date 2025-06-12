@@ -25,6 +25,7 @@ type AccueilData struct {
 	Error           bool
 	Authenticated   bool
 	User            models.Users
+	Breadcrumbs     []models.Breadcrumb
 }
 
 // Fonction pour initialiser le controller et les injections
@@ -41,6 +42,10 @@ func (c *AccueilController) AccueilRouter(r *mux.Router) {
 func (c *AccueilController) DisplayAccueil(w http.ResponseWriter, r *http.Request) {
 	// Récupération des variables
 	var data AccueilData
+
+	data.Breadcrumbs = []models.Breadcrumb{
+		{Name: "Accueil", URL: ""},
+	}
 
 	// Determine si l'utilisateur est connecté ou non
 	data.Authenticated = middlewares.SessionCheck(r, c.store)
@@ -70,7 +75,7 @@ func (c *AccueilController) DisplayAccueil(w http.ResponseWriter, r *http.Reques
 		formatted, _ := utilitaire.ConvertTime(items[i].Topics.Created_at, items[i].Topics.Updated_at, w, r)
 		items[i].CreatedAtFormatted = formatted
 	}
-	
+
 	// Récupération des données pour les envoyés dans l'html
 	data.TopicsWithUsers = items
 

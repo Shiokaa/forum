@@ -1,4 +1,3 @@
-/* Reset et fondations */
 * {
   margin: 0;
   padding: 0;
@@ -15,7 +14,6 @@ body {
   flex-direction: column;
 }
 
-/* En-tête */
 header {
   background-color: #524c4e;
   color: #fcebf1;
@@ -53,7 +51,48 @@ nav a:last-child {
   justify-content: center;
 }
 
-/* Contenu principal */
+.breadcrumb-container {
+  background-color: #fcebf1;
+  padding: 0.75rem 1rem;
+  max-width: 960px;
+  margin: 0 auto;
+  border-radius: 5px;
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+  content: ">";
+  display: inline-block;
+  padding: 0 0.5rem;
+  color: #a78e97;
+}
+
+.breadcrumb-item a {
+  color: #e91e63;
+  text-decoration: none;
+}
+
+.breadcrumb-item a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb-item.active {
+  color: #524c4e;
+  font-weight: bold;
+}
+
 main {
   padding: 2em 1em;
   max-width: 800px;
@@ -110,7 +149,6 @@ h2 {
   color: #4a1f2f;
 }
 
-/* Pied de page */
 footer {
   background-color: #524c4e;
   color: #fcebf1;

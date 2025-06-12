@@ -30,6 +30,7 @@
         </nav>
     </header>
 
+    {{template "breadcrumbs" .}}
     <main>
         <div class="container">
             <form action="/reponse/traitement?id={{.Message_id}}" method="post">
