@@ -47,6 +47,12 @@ func (c *TopicController) DisplayTopic(w http.ResponseWriter, r *http.Request) {
 	// Determine si l'utilisateur est connecté ou non
 	data.Authenticated = middlewares.SessionCheck(r, c.store)
 
+	session, _ := c.store.Get(r, "session")
+
+	if data.Authenticated {
+		data.Item.Users.User_id = session.Values["user_id"].(int)
+	}
+
 	// Récupération de l'ID depuis les paramètres
 	idString := r.FormValue("id")
 	idInt, errConv := strconv.Atoi(idString)

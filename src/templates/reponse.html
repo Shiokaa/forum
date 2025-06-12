@@ -1,24 +1,23 @@
-{{define "message"}}
+{{define "reponse"}}
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Message - {{.Item.Topics.Title}}</title>
-    <link rel="stylesheet" href="/static/styles/message.css">
+    <title>Forum</title>
+    <link rel="stylesheet" href="/static/styles/reponse.css">
 </head>
 
 <body>
-
     <header>
         <div class="logo"><strong>ForumXYZ</strong></div>
-        <nav aria-label="Navigation principale">
+        <nav>
             <a href="/">Accueil</a>
             <a href="#">Catégories</a>
             <a href="#">Recherche</a>
             {{if .Authenticated}}
-            <a href="/profil?id={{.Item.Users.User_id}}">
+            <a href="/profil?id={{.Item.Users.User_id}}" class="active">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                     fill="#fcebf1">
                     <path
@@ -32,38 +31,19 @@
     </header>
 
     <main>
-        {{if .Error}}
-        <h2>Une erreur est survenue lors du chargement du message.</h2>
-        {{else}}
-        <section class="message-container">
-            <h1 class="message-title">{{.Item.Topics.Title}}</h1>
-            <br>
-            <article class="message">
-                <div class="message-meta">
-                    <span><strong>{{.Item.Users.Name}}</strong></span>
-                    <span>{{.CreatedAtFormatted}}</span>
+        <div class="container">
+            <form action="/reponse/traitement?id={{.Message_id}}" method="post">
+                <div>
+                    <label for="contenu">Votre réponse :</label><br>
+                    <textarea id="content" name="content" rows="6" cols="60" placeholder="Écrivez votre réponse ici..."
+                        required></textarea>
                 </div>
-                <div class="message-content">
-                    <p>{{.Item.Messages.Content}}</p>
-                </div>
-            </article>
-        </section>
 
-        <section class="replies-container">
-            <h2>Réponses</h2>
-            {{range .Replies}}
-            <article class="reply">
-                <div class="reply-meta">
-                    <span><strong>{{.Users.Name}}</strong></span>
-                    <span>{{.CreatedAtFormatted}}</span>
+                <div>
+                    <button type="submit">Envoyer la réponse</button>
                 </div>
-                <div class="reply-content">
-                    <p>{{.Replies.Content}}</p>
-                </div>
-            </article>
-            {{end}}
-        </section>
-        {{end}}
+            </form>
+        </div>
     </main>
 
     <footer>
@@ -73,7 +53,6 @@
             <a href="#">Politique de confidentialité</a>
         </p>
     </footer>
-
 </body>
 
 </html>

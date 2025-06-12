@@ -28,6 +28,12 @@ header {
   font-size: 1.5em;
 }
 
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 nav a {
   color: #fcebf1;
   margin: 0 1em;
@@ -37,6 +43,12 @@ nav a {
 
 nav a:hover {
   color: #f8bbd0;
+}
+
+nav a:last-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 main {
@@ -111,6 +123,20 @@ h2 {
   margin: 0;
 }
 
+.message-response {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.message-response a {
+  text-decoration: none;
+  color: #524c4e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
 .topic-content em {
   color: #a79ca0;
 }

@@ -1,4 +1,4 @@
-/* Reset et fondations */
+/* Reset et structure de base */
 * {
   margin: 0;
   padding: 0;
@@ -15,7 +15,7 @@ body {
   flex-direction: column;
 }
 
-/* En-tête */
+/* Header */
 header {
   background-color: #524c4e;
   color: #fcebf1;
@@ -53,64 +53,69 @@ nav a:last-child {
   justify-content: center;
 }
 
-/* Contenu principal */
+/* Conteneur principal */
 main {
   padding: 2em 1em;
-  max-width: 800px;
+  max-width: 700px;
   margin: 0 auto;
   flex: 1;
 }
 
-h2 {
-  color: #a78e97;
-  margin-bottom: 1em;
-}
-
-.message {
-  margin-bottom: 1.5em;
+.container {
   background-color: #ffffff;
-  padding: 1em;
-  border-left: 4px solid #ffcfe0;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(233, 30, 99, 0.05);
+  padding: 2em;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(233, 30, 99, 0.1);
 }
 
-.message-meta {
+/* Formulaire */
+form {
   display: flex;
-  justify-content: space-between;
-  font-size: 0.9em;
+  flex-direction: column;
+  gap: 1.2em;
+}
+
+label {
+  font-weight: bold;
   color: #a78e97;
-  margin-bottom: 0.5em;
 }
 
-.message-content p {
-  margin: 0;
-  color: #4a1f2f;
-}
-
-.reply {
-  margin-bottom: 1.5em;
-  background-color: #ffffff;
+textarea {
+  width: 100%;
   padding: 1em;
-  border-left: 4px solid #ffcfe0;
   border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(233, 30, 99, 0.05);
-}
-
-.reply-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.9em;
-  color: #a78e97;
-  margin-bottom: 0.5em;
-}
-
-.reply-content p {
-  margin: 0;
+  border: 1px solid #ffcfe0;
+  resize: vertical;
+  font-size: 1em;
+  font-family: inherit;
+  background-color: #fff7fa;
   color: #4a1f2f;
+  transition: border-color 0.3s ease;
 }
 
-/* Pied de page */
+textarea:focus {
+  border-color: #e91e63;
+  outline: none;
+}
+
+/* Bouton */
+button[type="submit"] {
+  background-color: #e91e63;
+  color: white;
+  padding: 0.8em 1.5em;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #d81b60;
+}
+
+/* Footer */
 footer {
   background-color: #524c4e;
   color: #fcebf1;

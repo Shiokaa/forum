@@ -39,3 +39,24 @@ func (r *MessagesRepositories) GetMessageById(id int) (models.Topics_Join_Messag
 
 	return item, nil
 }
+
+func (r *MessagesRepositories) PostReplie(reply models.Replies_Joins_User_Message) (int, error) {
+	query := "INSERT INTO `message_replies`(`user_id`, `reply_to_id`, `content`) VALUES (?,?,?);"
+
+	// Utilisation de la query en remplaçant les valeurs par celles à injecter
+	sqlResult, sqlErr := r.db.Exec(query,
+		reply.Users.User_id,
+		reply.Messages.Message_id,
+		reply.Replies.Content,
+	)
+	if sqlErr != nil {
+		return -1, fmt.Errorf(" Erreur ajout reponse - Erreur : \n\t %s", sqlErr.Error())
+	}
+
+	id, idErr := sqlResult.LastInsertId()
+	if idErr != nil {
+		return -1, fmt.Errorf(" Erreur ajout reponse - Erreur récupération identifiant : \n\t %s", idErr.Error())
+	}
+
+	return int(id), nil
+}

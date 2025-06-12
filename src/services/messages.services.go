@@ -47,3 +47,18 @@ func (s *MessagesServices) ReadRepliesId(idReply int) ([]models.Replies_Join_Use
 
 	return replies, nil
 }
+
+func (s *MessagesServices) CreatedReply(reply models.Replies_Joins_User_Message) (int, error) {
+	// Vérification de la précense des données
+	if reply.Users.User_id < 0 || reply.Messages.Message_id < 0 || reply.Replies.Content == "" {
+		return -1, fmt.Errorf(" Erreur ajout reponse - Données manquantes ou invalides")
+	}
+
+	// Envoie des données vers le repositorie
+	userId, userErr := s.MessageRepositories.PostReplie(reply)
+	if userErr != nil {
+		return -1, userErr
+	}
+
+	return userId, nil
+}

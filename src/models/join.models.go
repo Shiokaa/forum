@@ -27,3 +27,9 @@ type Replies_Join_User struct {
 	Users              Users
 	CreatedAtFormatted string
 }
+
+type Replies_Joins_User_Message struct {
+	Replies  Replies
+	Users    Users
+	Messages Messages
+}
