@@ -94,6 +94,27 @@ h2 {
   margin-bottom: 0.5em;
 }
 
+.add-message-container {
+  margin-bottom: 2em;
+  text-align: right;
+}
+
+.add-message-btn {
+  background-color: #e91e63;
+  color: white;
+  padding: 0.8em 1.5em;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.add-message-btn:hover {
+  background-color: #d81b60;
+}
+
 .topic-content-container {
   display: flex;
   flex-direction: column;

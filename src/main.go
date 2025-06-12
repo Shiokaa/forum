@@ -43,6 +43,7 @@ func main() {
 	profilController := controllers.ProfilControllerInit(templates, usersServices, store)
 	errorController := controllers.ErrorControllerInit(templates)
 	reponseController := controllers.RepliesControllerInit(templates, messagesServices, store)
+	addMessageController := controllers.AddMessageControllerInit(templates, messagesServices, store)
 
 	router := mux.NewRouter() // Initialisation du router
 
@@ -59,6 +60,7 @@ func main() {
 	profilController.ProfilRouter(router)
 	errorController.ErrorRouter(router)
 	reponseController.RepliesRouter(router)
+	addMessageController.AddMessageRouter(router)
 
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./assets")))) // Sert les fichiers static
 

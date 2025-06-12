@@ -45,6 +45,10 @@
                 <span><strong>Modifié le :</strong> {{.UpdatedAtFormatted}}</span>
             </header>
 
+            <div class="add-message-container">
+                <a href="/addmessage?topic_id={{.Item.Topics.Topic_id}}" class="add-message-btn">Répondre au Topic</a>
+            </div>
+
             <section class="topic-content-container">
                 {{range .Messages}}
                 <a href="/message?id={{.Messages.Message_id}}">

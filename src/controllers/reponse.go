@@ -32,8 +32,8 @@ func RepliesControllerInit(template *template.Template, service *services.Messag
 
 // Routeur pour mettre en place les routes de reponse
 func (c *RepliesController) RepliesRouter(r *mux.Router) {
-	r.HandleFunc("/reponse", c.DisplayReplies).Methods("GET")
-	r.HandleFunc("/reponse/traitement", c.ReplyTraitement).Methods("POST")
+	r.Handle("/reponse", middlewares.RequireAuth(c.store, http.HandlerFunc(c.DisplayReplies))).Methods("GET")
+	r.Handle("/reponse/traitement", middlewares.RequireAuth(c.store, http.HandlerFunc(c.ReplyTraitement))).Methods("POST")
 }
 
 // Fonction permettant d'afficher la page formulaire d'inscription avec une gestion d'erreur
@@ -42,12 +42,10 @@ func (c *RepliesController) DisplayReplies(w http.ResponseWriter, r *http.Reques
 
 	session, _ := c.store.Get(r, "session")
 
-	data.Authenticated = middlewares.SessionCheck(r, c.store)
-	if data.Authenticated {
-		data.Item.Users.User_id = session.Values["user_id"].(int)
-	}
-	message_id := r.FormValue("id")
+	data.Authenticated = true
+	data.Item.Users.User_id = session.Values["user_id"].(int)
 
+	message_id := r.FormValue("id")
 	data.Message_id = message_id
 
 	c.template.ExecuteTemplate(w, "reponse", data)

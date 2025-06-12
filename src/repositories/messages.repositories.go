@@ -60,3 +60,24 @@ func (r *MessagesRepositories) PostReplie(reply models.Replies_Joins_User_Messag
 
 	return int(id), nil
 }
+
+func (r *MessagesRepositories) CreateMessage(message models.Messages) (int, error) {
+	query := "INSERT INTO messages (topic_id, user_id, content) VALUES (?, ?, ?)"
+
+	// Utilisation de la query en remplaçant les valeurs par celles à injecter
+	sqlResult, sqlErr := r.db.Exec(query,
+		message.Topic_id,
+		message.User_id,
+		message.Content,
+	)
+	if sqlErr != nil {
+		return -1, fmt.Errorf(" erreur lors de l'ajout du message - Erreur : \n\t %s", sqlErr.Error())
+	}
+
+	id, idErr := sqlResult.LastInsertId()
+	if idErr != nil {
+		return -1, fmt.Errorf(" erreur lors de la récupération de l'identifiant - Erreur : \n\t %s", idErr.Error())
+	}
+
+	return int(id), nil
+}

@@ -54,3 +54,18 @@ func (s *TopicsServices) ReadMessages(idTopic int) ([]models.Topics_Join_Message
 
 	return items, nil
 }
+
+func (s *MessagesServices) CreateMessage(message models.Messages) (int, error) {
+	// Vérification de la présence des données
+	if message.Topic_id < 1 || message.User_id < 1 || message.Content == "" {
+		return -1, fmt.Errorf(" erreur lors de l'ajout du message - Données manquantes ou invalides")
+	}
+
+	// Envoi des données vers le repository
+	messageId, err := s.MessageRepositories.CreateMessage(message)
+	if err != nil {
+		return -1, err
+	}
+
+	return messageId, nil
+}
