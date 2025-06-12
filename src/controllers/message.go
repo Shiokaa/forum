@@ -4,6 +4,7 @@ import (
 	"forum/src/middlewares"
 	"forum/src/models"
 	"forum/src/services"
+	"forum/src/utilitaire"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -20,10 +21,11 @@ type MessageController struct {
 }
 
 type MessageData struct {
-	Item          models.Topics_Join_Messages
-	Replies       []models.Replies_Join_User
-	Error         bool
-	Authenticated bool
+	Item               models.Topics_Join_Messages
+	Replies            []models.Replies_Join_User
+	Error              bool
+	Authenticated      bool
+	CreatedAtFormatted string
 }
 
 // Fonction pour initialiser le controller et les injections
@@ -61,6 +63,14 @@ func (c *MessageController) DisplayMessage(w http.ResponseWriter, r *http.Reques
 	if errReplies != nil {
 		http.Redirect(w, r, "/error?code=404&message=item_not_found", http.StatusSeeOther)
 		return
+	}
+
+	created_at, _ := utilitaire.ConvertTime(item.Messages.Created_at, item.Messages.Updated_at, w, r)
+	data.CreatedAtFormatted = created_at
+
+	for i := range items {
+		formatted, _ := utilitaire.ConvertTime(items[i].Replies.Created_at, items[i].Replies.Updated_at, w, r)
+		items[i].CreatedAtFormatted = formatted
 	}
 
 	data.Replies = items

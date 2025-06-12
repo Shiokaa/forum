@@ -40,8 +40,8 @@
                 <h2>Informations</h2>
                 <p><strong>Nom d'utilisateur :</strong> {{.User.Name}}</p>
                 <p><strong>Adresse e-mail :</strong> {{.User.Email}}</p>
-                <p><strong>Membre depuis le :</strong> {{.User.Created_at}}</p>
-                <p><strong>Dernière mise à jour du profil :</strong> {{.User.Updated_at}}</p>
+                <p><strong>Membre depuis le :</strong> {{.CreatedAtFormatted}}</p>
+                <p><strong>Dernière mise à jour du profil :</strong> {{.UpdatedAtFormatted}}</p>
             </div>
 
             <div class="profile-activity">

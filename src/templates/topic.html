@@ -35,7 +35,8 @@
                 <h1 class="topic-title">{{.Item.Topics.Title}}</h1>
                 <span><strong>Auteur :</strong> {{.Item.Users.Name}}</span>
                 <span><strong>Forum :</strong> {{.Item.Forums.Name}}</span>
-                <span><strong>Date :</strong> {{.Item.Topics.Created_at}}</span>
+                <span><strong>Date :</strong> {{.CreatedAtFormatted}}</span>
+                <span><strong>Modifié le :</strong> {{.UpdatedAtFormatted}}</span>
             </header>
 
             <section class="topic-content-container">

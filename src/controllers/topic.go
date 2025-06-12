@@ -4,6 +4,7 @@ import (
 	"forum/src/middlewares"
 	"forum/src/models"
 	"forum/src/services"
+	"forum/src/utilitaire"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -26,10 +27,12 @@ func TopicControllerInit(template *template.Template, service *services.TopicsSe
 
 // Structure créant un item qui est le topic ainsi que l'utilisateur ayant écrit le topic, récupère aussi les messages du topic
 type TopicData struct {
-	Item          models.Topics_Join_Users_Forums
-	Messages      []models.Topics_Join_Messages
-	Error         bool
-	Authenticated bool
+	Item               models.Topics_Join_Users_Forums
+	Messages           []models.Topics_Join_Messages
+	Error              bool
+	Authenticated      bool
+	CreatedAtFormatted string
+	UpdatedAtFormatted string
 }
 
 // Routeur pour mettre en place les routes d'inscription
@@ -69,6 +72,11 @@ func (c *TopicController) DisplayTopic(w http.ResponseWriter, r *http.Request) {
 	// Affichage du topic
 	data.Item = item
 	data.Messages = messages
+
+	// Conversion de la date et affichage
+	created_at, updated_at := utilitaire.ConvertTime(item.Topics.Created_at, item.Topics.Updated_at, w, r)
+	data.CreatedAtFormatted = created_at
+	data.UpdatedAtFormatted = updated_at
 
 	c.template.ExecuteTemplate(w, "topic", data)
 }

@@ -35,7 +35,7 @@
             <article class="message">
                 <div class="message-meta">
                     <span><strong>{{.Item.Users.Name}}</strong></span>
-                    <span>{{.Item.Messages.Created_at}}</span>
+                    <span>{{.CreatedAtFormatted}}</span>
                 </div>
                 <div class="message-content">
                     <p>{{.Item.Messages.Content}}</p>
@@ -49,7 +49,7 @@
             <article class="reply">
                 <div class="reply-meta">
                     <span><strong>{{.Users.Name}}</strong></span>
-                    <span>{{.Replies.Created_at}}</span>
+                    <span>{{.CreatedAtFormatted}}</span>
                 </div>
                 <div class="reply-content">
                     <p>{{.Replies.Content}}</p>

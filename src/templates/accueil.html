@@ -38,7 +38,7 @@
         {{range .TopicsWithUsers}}
         <div class="thread">
             <a href="/topic?id={{.Topics.Topic_id}}">{{.Topics.Title}}</a>
-            <p>Posté par <strong>{{.Users.Name}}</strong> {{.Topics.Created_at}}</p>
+            <p>Posté par <strong>{{.Users.Name}}</strong> {{.CreatedAtFormatted}}</p>
         </div>
         {{end}}
         {{end}}

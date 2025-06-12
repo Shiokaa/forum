@@ -4,6 +4,7 @@ import (
 	"forum/src/middlewares"
 	"forum/src/models"
 	"forum/src/services"
+	"forum/src/utilitaire"
 	"html/template"
 	"net/http"
 
@@ -65,6 +66,11 @@ func (c *AccueilController) DisplayAccueil(w http.ResponseWriter, r *http.Reques
 		http.Redirect(w, r, "/error?code=404&message=invalid_data", http.StatusSeeOther)
 	}
 
+	for i := range items {
+		formatted, _ := utilitaire.ConvertTime(items[i].Topics.Created_at, items[i].Topics.Updated_at, w, r)
+		items[i].CreatedAtFormatted = formatted
+	}
+	
 	// Récupération des données pour les envoyés dans l'html
 	data.TopicsWithUsers = items
 
