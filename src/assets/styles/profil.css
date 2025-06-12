@@ -141,6 +141,28 @@ main {
   color: #a78e97;
 }
 
+.profile-deconnection {
+  width: 100%;
+  text-align: center;
+  margin-top: 50px;
+}
+
+.profile-deconnection a {
+  text-decoration: none;
+  font-size: 1.1rem;
+  color: #fff;
+  background-color: #ff5353;
+  padding: 1.2rem 2rem 1.2rem 2rem;
+  border: 1px solid #ff5353;
+  border-radius: 50px;
+  transition: all 0.3s ease-in-out;
+}
+
+.profile-deconnection a:hover {
+  background-color: red;
+  border: 1px solid red;
+}
+
 footer {
   background-color: #524c4e;
   color: #fcebf1;

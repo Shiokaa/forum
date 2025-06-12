@@ -33,7 +33,6 @@ func AccueilControllerInit(template *template.Template, service *services.Topics
 
 // Routeur pour mettre en place les routes d'accueil
 func (c *AccueilController) AccueilRouter(r *mux.Router) {
-
 	r.HandleFunc("/", c.DisplayAccueil).Methods("GET") // Redirection de la racine vers l'accueil
 }
 

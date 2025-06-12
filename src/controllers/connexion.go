@@ -35,7 +35,7 @@ func (c *ConnexionControllers) DisplayConnexion(w http.ResponseWriter, r *http.R
 	code := r.FormValue("code")
 
 	if code != "" {
-		c.template.ExecuteTemplate(w, "inscription", code)
+		c.template.ExecuteTemplate(w, "connexion", code)
 		return
 	}
 
@@ -63,7 +63,7 @@ func (c *ConnexionControllers) ConnexionTraitement(w http.ResponseWriter, r *htt
 	session.Values["authenticated"] = true
 	session.Save(r, w)
 
-	http.Redirect(w, r, "/accueil", http.StatusMovedPermanently)
+	http.Redirect(w, r, "/", http.StatusMovedPermanently)
 }
 
 func (c *ConnexionControllers) DisconnectUser(w http.ResponseWriter, r *http.Request) {

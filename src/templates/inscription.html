@@ -35,8 +35,10 @@
 
                 <input type="submit" value="S'inscrire">
 
-                {{if .}}
+                {{if eq .Erreur "invalid_data"}}
                 <p>Erreur donnée manquante</p>
+                {{else if eq .Erreur "data_exist"}}
+                <p>Nom d'utilisateur ou email déjà pris</p>
                 {{end}}
             </form>
         </div>

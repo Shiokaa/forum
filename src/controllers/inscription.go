@@ -19,6 +19,10 @@ type InscriptionController struct {
 	store    *sessions.CookieStore
 }
 
+type InscriptionData struct {
+	Erreur string
+}
+
 // Fonction pour initialiser le controller et les injections
 func InscriptionControllerInit(template *template.Template, service *services.UsersServices, store *sessions.CookieStore) *InscriptionController {
 	return &InscriptionController{template: template, service: service, store: store}
@@ -32,9 +36,16 @@ func (c *InscriptionController) InsciptionRouter(r *mux.Router) {
 
 // Fonction permettant d'afficher la page formulaire d'inscription avec une gestion d'erreur
 func (c *InscriptionController) DisplayInscription(w http.ResponseWriter, r *http.Request) {
+	var data InscriptionData
+
 	code := r.FormValue("code")
-	if code != "" {
-		c.template.ExecuteTemplate(w, "inscription", code)
+	if code == "invalid_data" {
+		data.Erreur = "invalid_data"
+		c.template.ExecuteTemplate(w, "inscription", data)
+		return
+	} else if code == "data_exist" {
+		data.Erreur = "data_exist"
+		c.template.ExecuteTemplate(w, "inscription", data)
 		return
 	}
 
@@ -56,7 +67,7 @@ func (c *InscriptionController) InscriptionTraitement(w http.ResponseWriter, r *
 
 	hashedPassword, errHash := bcrypt.GenerateFromPassword([]byte(password), 14)
 	if errHash != nil {
-		http.Redirect(w, r, "/inscription?code=invalid_password", http.StatusSeeOther)
+		http.Redirect(w, r, "/inscription?code=invalid_data", http.StatusSeeOther)
 		return
 	}
 
@@ -71,7 +82,7 @@ func (c *InscriptionController) InscriptionTraitement(w http.ResponseWriter, r *
 	// Création de l'utilisateur via le service de création d'utilisateur
 	_, userErr := c.service.Create(newUser)
 	if userErr != nil {
-		http.Error(w, userErr.Error(), http.StatusInternalServerError)
+		http.Redirect(w, r, "/inscription?code=data_exist", http.StatusSeeOther)
 		return
 	}
 
