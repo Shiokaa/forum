@@ -18,6 +18,8 @@
                 <input name="q" type="search" placeholder="Rechercher..." required>
                 <button type="submit" title="Lancer la recherche">🔍</button>
             </form>
+            {{if eq .User.Role_id 1}}
+            <a href="/admin" style="color: #ff8a80;">Admin</a> {{end}}
             {{if .Authenticated}}
             <a href="/profil?id={{.User.User_id}}" class="active">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"

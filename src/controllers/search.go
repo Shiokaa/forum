@@ -44,6 +44,7 @@ func (c *SearchController) DisplaySearchResults(w http.ResponseWriter, r *http.R
 	if data.Authenticated {
 		session, _ := c.store.Get(r, "session")
 		data.User.User_id = session.Values["user_id"].(int)
+		data.User.Role_id = session.Values["role_id"].(int)
 	}
 
 	// Récupérer le terme de la recherche depuis l'URL (?q=...)
