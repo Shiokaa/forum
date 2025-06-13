@@ -23,7 +23,7 @@
             {{if eq .CurrentUser.Role_id 1}}
             <a href="/admin" style="color: #ff8a80;">Admin</a> {{end}}
             {{if .Authenticated}}
-            <a href="/profil?id={{.Item.Users.User_id}}">
+            <a href="/profil?id={{.CurrentUser.User_id}}">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                     fill="#fcebf1">
                     <path
