@@ -33,7 +33,9 @@
     <div class="main-container">
         <aside class="sidebar-left">
             <div class="sidebar-widget">
-                <h3 class="widget-title">Catégories</h3>
+                <a href="/categories">
+                    <h3 class="widget-title">Catégories</h3>
+                </a>
                 <ul class="category-list">
                     {{range .Categories}}
                     <li><a href="/categorie?id={{.Category_id}}">{{.Name}}</a></li>

@@ -124,6 +124,10 @@ nav a:last-child {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+.sidebar-widget a {
+  text-decoration: none;
+}
+
 .widget-title {
   font-size: 1.2em;
   color: #524c4e;
