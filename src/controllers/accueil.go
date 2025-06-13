@@ -60,10 +60,12 @@ func (c *AccueilController) DisplayAccueil(w http.ResponseWriter, r *http.Reques
 	var data AccueilData
 
 	data.Authenticated = middlewares.SessionCheck(r, c.store)
-	session, _ := c.store.Get(r, "session")
 	if data.Authenticated {
+		session, _ := c.store.Get(r, "session")
 		data.User.User_id = session.Values["user_id"].(int)
+		data.User.Role_id = session.Values["role_id"].(int)
 	}
+
 	data.Breadcrumbs = []models.Breadcrumb{
 		{Name: "Accueil", URL: ""},
 	}

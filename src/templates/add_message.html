@@ -15,9 +15,14 @@
         <nav>
             <a href="/">Accueil</a>
             <a href="/categories">Catégories</a>
-            <a href="#">Recherche</a>
+            <form action="/recherche" method="GET" class="nav-search-form">
+                <input name="q" type="search" placeholder="Rechercher..." required>
+                <button type="submit" title="Lancer la recherche">🔍</button>
+            </form>
+            {{if eq .User.Role_id 1}}
+            <a href="/admin" style="color: #ff8a80;">Admin</a> {{end}}
             {{if .Authenticated}}
-            <a href="/profil?id={{.User_id}}" class="active">
+            <a href="/profil?id={{.User.User_id}}" class="active">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                     fill="#fcebf1">
                     <path
@@ -32,7 +37,7 @@
     {{template "breadcrumbs" .}}
     <main>
         <div class="container">
-            <form action="/addmessage/traitement?topic_id={{.Topic_id}}" method="post">
+            <form class="form2" action="/addmessage/traitement?topic_id={{.Topic_id}}" method="post">
                 <div>
                     <label for="content">Votre message :</label><br>
                     <textarea id="content" name="content" rows="8" cols="60" placeholder="Écrivez votre message ici..."
@@ -40,7 +45,7 @@
                 </div>
 
                 <div>
-                    <button type="submit">Envoyer le message</button>
+                    <button class="submit2" type="submit">Envoyer le message</button>
                 </div>
             </form>
         </div>

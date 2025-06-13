@@ -22,7 +22,7 @@ func (r *MessagesRepositories) GetMessageById(id int) (models.Topics_Join_Messag
 
 	// Query permettant de récupérer un message selon l'id avec le topic lié au message et l'utilisateur
 	query := `
-	SELECT m.message_id, m.content, m.created_at, t.title, u.name, t.topic_id
+	SELECT m.message_id, m.topic_id, m.user_id, m.content, m.created_at, t.title, u.name
 	FROM messages AS m
 	JOIN users AS u ON u.user_id = m.user_id
 	JOIN topics AS t ON t.topic_id = m.topic_id
@@ -30,7 +30,15 @@ func (r *MessagesRepositories) GetMessageById(id int) (models.Topics_Join_Messag
 	`
 
 	// Récupération de la query en une seul "row"
-	sqlErr := r.db.QueryRow(query, id).Scan(&item.Messages.Message_id, &item.Messages.Content, &item.Messages.Created_at, &item.Topics.Title, &item.Users.Name, &item.Topics.Topic_id)
+	sqlErr := r.db.QueryRow(query, id).Scan(
+		&item.Messages.Message_id,
+		&item.Messages.Topic_id,
+		&item.Messages.User_id,
+		&item.Messages.Content,
+		&item.Messages.Created_at,
+		&item.Topics.Title,
+		&item.Users.Name,
+	)
 	if sqlErr != nil {
 		if sqlErr == sql.ErrNoRows {
 			return models.Topics_Join_Messages{}, nil

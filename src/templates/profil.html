@@ -16,7 +16,12 @@
         <nav>
             <a href="/">Accueil</a>
             <a href="/categories">Catégories</a>
-            <a href="#">Recherche</a>
+            <form action="/recherche" method="GET" class="nav-search-form">
+                <input name="q" type="search" placeholder="Rechercher..." required>
+                <button type="submit" title="Lancer la recherche">🔍</button>
+            </form>
+            {{if eq .User.Role_id 1}}
+            <a href="/admin" style="color: #ff8a80;">Admin</a> {{end}}
             {{if .Authenticated}}
             <a href="/profil?id={{.User.User_id}}" class="active">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
@@ -45,8 +50,19 @@
             </div>
 
             <div class="profile-activity">
-                <h2>Activité sur le forum</h2>
-                <p>Ici, vous pourriez afficher les sujets créés et les messages postés par l'utilisateur.</p>
+                <h2>Topics créés</h2>
+                <div class="topics-list">
+                    {{if .CreatedTopics}}
+                    {{range .CreatedTopics}}
+                    <div class="thread">
+                        <a href="/topic?id={{.Topics.Topic_id}}">{{.Topics.Title}}</a>
+                        <p>Posté le {{.CreatedAtFormatted}}</p>
+                    </div>
+                    {{end}}
+                    {{else}}
+                    <p>Cet utilisateur n'a créé aucun topic.</p>
+                    {{end}}
+                </div>
             </div>
             <div class="profile-deconnection">
                 <a href="/deconnexion">Déconnexion</a>

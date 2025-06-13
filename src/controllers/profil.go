@@ -15,9 +15,10 @@ import (
 
 // Structure avec injection de service et template
 type ProfilControllers struct {
-	service  *services.UsersServices
-	template *template.Template
-	store    *sessions.CookieStore
+	service       *services.UsersServices
+	template      *template.Template
+	store         *sessions.CookieStore
+	topicsService *services.TopicsServices
 }
 
 type ProfilData struct {
@@ -26,11 +27,17 @@ type ProfilData struct {
 	CreatedAtFormatted string
 	UpdatedAtFormatted string
 	Breadcrumbs        []models.Breadcrumb
+	CreatedTopics      []models.Topics_Join_Users
 }
 
 // Fonction pour initialiser le controller et les injections
-func ProfilControllerInit(template *template.Template, service *services.UsersServices, store *sessions.CookieStore) *ProfilControllers {
-	return &ProfilControllers{template: template, service: service, store: store}
+func ProfilControllerInit(template *template.Template, service *services.UsersServices, store *sessions.CookieStore, topicsService *services.TopicsServices) *ProfilControllers {
+	return &ProfilControllers{
+		template:      template,
+		service:       service,
+		store:         store,
+		topicsService: topicsService,
+	}
 }
 
 // Routeur pour mettre en place les routes d'accueil
@@ -56,6 +63,15 @@ func (c *ProfilControllers) DisplayProfil(w http.ResponseWriter, r *http.Request
 	data.Breadcrumbs = []models.Breadcrumb{
 		{Name: "Accueil", URL: "/"},
 		{Name: "Profil de " + user.Name, URL: ""},
+	}
+
+	topics, err := c.topicsService.GetTopicsByUserID(idInt)
+	if err == nil {
+		for i := range topics {
+			formatted, _ := utilitaire.ConvertTime(topics[i].Topics.Created_at, topics[i].Topics.Updated_at, w, r)
+			topics[i].CreatedAtFormatted = formatted
+		}
+		data.CreatedTopics = topics
 	}
 
 	created_at, updated_at := utilitaire.ConvertTime(data.User.Created_at, data.User.Updated_at, w, r)

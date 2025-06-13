@@ -25,6 +25,48 @@ header {
   flex-wrap: wrap;
 }
 
+.nav-search-form {
+  display: flex;
+  align-items: center;
+}
+
+.nav-search-form input {
+  background-color: #3e3a3c;
+  border: 1px solid #a78e97;
+  color: #fcebf1;
+  padding: 10px 12px;
+  border-radius: 20px 0 0 20px;
+  border-right: none;
+  transition: background-color 0.2s;
+  font-size: 0.9em;
+}
+
+.nav-search-form input::placeholder {
+  color: #a79ca0;
+}
+
+.nav-search-form input:focus {
+  outline: none;
+  background-color: #524c4e;
+  border-color: #f8bbd0;
+}
+
+.nav-search-form button {
+  background-color: #3e3a3c;
+  border: 1px solid #a78e97;
+  color: #fcebf1;
+  padding: 8px 12px;
+  border-radius: 0 20px 20px 0;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  font-size: 0.9em;
+}
+
+.nav-search-form button:hover {
+  background-color: #e91e63;
+  border-color: #e91e63;
+}
+
 .logo {
   font-size: 1.5em;
   font-weight: bold;
@@ -107,36 +149,47 @@ main {
   flex: 1;
 }
 
-.thread {
+.profile-activity {
   background-color: #ffffff;
   margin-bottom: 1.5em;
-  padding: 1.5em;
+  padding: 1.5em 2em;
   border-radius: 10px;
   box-shadow: 0 2px 6px #e91e6326;
-  transition: transform 0.2s ease;
 }
 
-.thread:hover {
-  transform: scale(1.01);
+.profile-activity h2 {
+  font-size: 1.2em; /* Taille ajustée pour le titre de la section */
+  font-weight: bold;
+  color: #524c4e;
+  margin-bottom: 1em;
+  padding-bottom: 0.4em;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.thread {
+  background-color: #fdf6f8;
+  margin-bottom: 1em;
+  padding: 1.5em;
+  border-radius: 10px;
+  border-left: 3px solid #f8bbd0;
 }
 
 .thread p {
   color: #a78e97;
+  margin-top: 0.5em;
 }
 
 .thread a {
   display: inline-block;
-  font-size: 1.2em;
+  font-size: 1.1em;
   font-weight: bold;
   color: #a79ca0;
   text-decoration: none;
-  margin-bottom: 0.5em;
-  transition: color 0.3s ease, transform 0.2s ease;
+  transition: color 0.2s;
 }
 
 .thread a:hover {
   color: #524c4e;
-  transform: translateX(4px);
 }
 
 .profile-header h1 {

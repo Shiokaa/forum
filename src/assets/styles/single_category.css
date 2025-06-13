@@ -23,6 +23,48 @@ header {
   flex-wrap: wrap;
 }
 
+.nav-search-form {
+  display: flex;
+  align-items: center;
+}
+
+.nav-search-form input {
+  background-color: #3e3a3c;
+  border: 1px solid #a78e97;
+  color: #fcebf1;
+  padding: 10px 12px;
+  border-radius: 20px 0 0 20px;
+  border-right: none;
+  transition: background-color 0.2s;
+  font-size: 0.9em;
+}
+
+.nav-search-form input::placeholder {
+  color: #a79ca0;
+}
+
+.nav-search-form input:focus {
+  outline: none;
+  background-color: #524c4e;
+  border-color: #f8bbd0;
+}
+
+.nav-search-form button {
+  background-color: #3e3a3c;
+  border: 1px solid #a78e97;
+  color: #fcebf1;
+  padding: 8px 12px;
+  border-radius: 0 20px 20px 0;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  font-size: 0.9em;
+}
+
+.nav-search-form button:hover {
+  background-color: #e91e63;
+  border-color: #e91e63;
+}
+
 .logo {
   font-size: 1.5em;
 }

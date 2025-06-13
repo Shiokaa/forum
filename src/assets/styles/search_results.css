@@ -135,67 +135,88 @@ nav a:last-child {
   font-weight: bold;
 }
 
-main {
-  padding: 2em 1em;
-  max-width: 700px;
-  margin: 0 auto;
-  flex: 1;
+.results-list {
+  margin-top: 2em;
 }
 
-.container {
-  background-color: #ffffff;
-  padding: 2em;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(233, 30, 99, 0.1);
+.result-item {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1.5em;
+  margin-bottom: 1em;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.form2 {
+.result-header {
   display: flex;
-  flex-direction: column;
-  gap: 1.2em;
+  align-items: center;
+  gap: 0.8em;
+  margin-bottom: 0.5em;
 }
 
-label {
+.result-title {
+  font-size: 1.2em;
   font-weight: bold;
-  color: #a78e97;
+  color: #524c4e;
+  text-decoration: none;
 }
 
-textarea {
-  width: 100%;
-  padding: 1em;
-  border-radius: 8px;
-  border: 1px solid #ffcfe0;
-  resize: vertical;
-  font-size: 1em;
-  font-family: inherit;
-  background-color: #fff7fa;
-  color: #4a1f2f;
-  transition: border-color 0.3s ease;
+.result-title:hover {
+  color: #e91e63;
 }
 
-textarea:focus {
-  border-color: #e91e63;
-  outline: none;
+.result-type {
+  font-size: 0.8em;
+  font-weight: bold;
+  padding: 0.2em 0.6em;
+  border-radius: 5px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-/* Bouton */
-.submit2 {
+.result-type-Catégorie {
   background-color: #e91e63;
-  color: white;
-  padding: 0.8em 1.5em;
-  border: none;
-  border-radius: 8px;
-  font-size: 1em;
+}
+.result-type-Forum {
+  background-color: #2196f3;
+}
+.result-type-Topic {
+  background-color: #4caf50;
+}
+
+.result-description {
+  color: #a78e97;
+  font-size: 0.9em;
+  padding-left: 1em;
+  border-left: 2px solid #f0f0f0;
+  margin-top: 0.8em;
+}
+
+.search-form {
+  display: flex;
+}
+.search-form input {
+  border: 1px solid #a78e97;
+  background-color: #524c4e;
+  color: #fff;
+  border-radius: 5px 0 0 5px;
+  padding: 0.5em;
+  border-right: none;
+}
+.search-form input:focus {
+  outline: none;
+  border-color: #f8bbd0;
+}
+.search-btn-submit {
+  border: 1px solid #a78e97;
+  background-color: #fcebf1;
+  color: #524c4e;
+  border-radius: 0 5px 5px 0;
+  padding: 0.5em 1em;
   cursor: pointer;
-  align-self: flex-start;
-  transition: background-color 0.3s ease;
 }
 
-.submit2:hover {
-  background-color: #d81b60;
-}
-
-/* Footer */
 footer {
   background-color: #524c4e;
   color: #fcebf1;

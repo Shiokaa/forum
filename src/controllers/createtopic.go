@@ -49,6 +49,7 @@ func (c *CreateTopicController) DisplayCreateTopicForm(w http.ResponseWriter, r 
 	session, _ := c.store.Get(r, "session")
 	data.Authenticated = true
 	data.User.User_id = session.Values["user_id"].(int)
+	data.User.Role_id = session.Values["role_id"].(int)
 
 	// Récupérer tous les forums pour le menu déroulant
 	forums, _ := c.forumsService.GetAll()

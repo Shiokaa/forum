@@ -80,3 +80,13 @@ func (s *MessagesServices) DisplayRecent(limit int) ([]models.Topics_Join_Messag
 func (s *MessagesServices) DeleteMessage(id int) error {
 	return s.MessageRepositories.DeleteMessage(id)
 }
+
+// ReadReplyByID récupère les détails d'une réponse.
+func (s *MessagesServices) ReadReplyByID(id int) (models.Replies, error) {
+	return s.RepliesRepositories.GetReplyByID(id)
+}
+
+// DeleteReply demande la suppression d'une réponse.
+func (s *MessagesServices) DeleteReply(id int) error {
+	return s.RepliesRepositories.DeleteReply(id)
+}

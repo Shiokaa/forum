@@ -41,10 +41,13 @@ func (c *RepliesController) RepliesRouter(r *mux.Router) {
 func (c *RepliesController) DisplayReplies(w http.ResponseWriter, r *http.Request) {
 	var data RepliesData
 
-	session, _ := c.store.Get(r, "session")
-
+	data.Authenticated = middlewares.SessionCheck(r, c.store)
+	if data.Authenticated {
+		session, _ := c.store.Get(r, "session")
+		data.Item.Users.User_id = session.Values["user_id"].(int)
+		data.Item.Users.Role_id = session.Values["role_id"].(int)
+	}
 	data.Authenticated = true
-	data.Item.Users.User_id = session.Values["user_id"].(int)
 
 	message_id := r.FormValue("id")
 	messageIdInt, _ := strconv.Atoi(message_id)

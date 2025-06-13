@@ -49,6 +49,7 @@ func (c *ForumController) DisplaySingleForum(w http.ResponseWriter, r *http.Requ
 	if data.Authenticated {
 		session, _ := c.store.Get(r, "session")
 		data.User.User_id = session.Values["user_id"].(int)
+		data.User.Role_id = session.Values["role_id"].(int)
 	}
 
 	// Récupérer l'ID du forum depuis l'URL

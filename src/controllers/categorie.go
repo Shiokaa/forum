@@ -49,7 +49,7 @@ func CategoryControllerInit(template *template.Template, store *sessions.CookieS
 
 func (c *CategoryController) CategoryRouter(r *mux.Router) {
 	r.HandleFunc("/categories", c.DisplayCategories).Methods("GET")
-	r.HandleFunc("/categorie", c.DisplaySingleCategory).Methods("GET") // <-- AJOUTER LA NOUVELLE ROUTE
+	r.HandleFunc("/categorie", c.DisplaySingleCategory).Methods("GET")
 }
 
 func (c *CategoryController) DisplayCategories(w http.ResponseWriter, r *http.Request) {
@@ -58,6 +58,7 @@ func (c *CategoryController) DisplayCategories(w http.ResponseWriter, r *http.Re
 	if data.Authenticated {
 		session, _ := c.store.Get(r, "session")
 		data.User.User_id = session.Values["user_id"].(int)
+		data.User.Role_id = session.Values["role_id"].(int)
 	}
 
 	categoriesWithForums, err := c.categoriesService.GetCategoriesWithForums(c.forumsService)
@@ -81,6 +82,7 @@ func (c *CategoryController) DisplaySingleCategory(w http.ResponseWriter, r *htt
 	if data.Authenticated {
 		session, _ := c.store.Get(r, "session")
 		data.User.User_id = session.Values["user_id"].(int)
+		data.User.Role_id = session.Values["role_id"].(int)
 	}
 
 	// Récupérer l'ID de la catégorie depuis l'URL

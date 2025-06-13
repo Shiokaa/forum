@@ -27,6 +27,7 @@ type MessageData struct {
 	Authenticated      bool
 	CreatedAtFormatted string
 	Breadcrumbs        []models.Breadcrumb
+	CurrentUser        models.Users
 }
 
 // Fonction pour initialiser le controller et les injections
@@ -46,11 +47,16 @@ func (c *MessageController) DisplayMessage(w http.ResponseWriter, r *http.Reques
 	// Determine si l'utilisateur est connecté ou non
 	data.Authenticated = middlewares.SessionCheck(r, c.store)
 
-	session, _ := c.store.Get(r, "session")
-
 	if data.Authenticated {
-		data.Item.Users.User_id = session.Values["user_id"].(int)
+		session, _ := c.store.Get(r, "session")
+		if userID, ok := session.Values["user_id"].(int); ok {
+			data.CurrentUser.User_id = userID
+		}
+		if roleID, ok := session.Values["role_id"].(int); ok {
+			data.CurrentUser.Role_id = roleID
+		}
 	}
+
 	// Récupération de l'ID depuis les paramètres
 	idString := r.FormValue("id")
 	idInt, errConv := strconv.Atoi(idString)
@@ -67,7 +73,7 @@ func (c *MessageController) DisplayMessage(w http.ResponseWriter, r *http.Reques
 
 	data.Breadcrumbs = []models.Breadcrumb{
 		{Name: "Accueil", URL: "/"},
-		{Name: item.Topics.Title, URL: "/topic?id=" + strconv.Itoa(item.Topics.Topic_id)},
+		{Name: item.Topics.Title, URL: "/topic?id=" + strconv.Itoa(item.Messages.Topic_id)},
 		{Name: "Message", URL: ""},
 	}
 

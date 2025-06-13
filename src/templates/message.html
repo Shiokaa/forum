@@ -16,7 +16,12 @@
         <nav aria-label="Navigation principale">
             <a href="/">Accueil</a>
             <a href="/categories">Catégories</a>
-            <a href="#">Recherche</a>
+            <form action="/recherche" method="GET" class="nav-search-form">
+                <input name="q" type="search" placeholder="Rechercher..." required>
+                <button type="submit" title="Lancer la recherche">🔍</button>
+            </form>
+            {{if eq .CurrentUser.Role_id 1}}
+            <a href="/admin" style="color: #ff8a80;">Admin</a> {{end}}
             {{if .Authenticated}}
             <a href="/profil?id={{.Item.Users.User_id}}">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
@@ -59,6 +64,14 @@
                 </div>
                 <div class="reply-content">
                     <p>{{.Replies.Content}}</p>
+                </div>
+                <div class="reply-actions">
+                    {{if or (eq $.CurrentUser.User_id .Replies.User_id) (eq $.CurrentUser.Role_id 1)}}
+                    <form action="/reply/delete" method="POST" class="delete-form">
+                        <input type="hidden" name="reply_id" value="{{.Replies.Reply_id}}">
+                        <button type="submit" class="delete-btn">Supprimer</button>
+                    </form>
+                    {{end}}
                 </div>
             </article>
             {{end}}

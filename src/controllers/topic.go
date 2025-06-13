@@ -15,14 +15,15 @@ import (
 
 // Structure avec injection de service et template
 type TopicController struct {
-	service  *services.TopicsServices
-	template *template.Template
-	store    *sessions.CookieStore
+	service          *services.TopicsServices
+	template         *template.Template
+	store            *sessions.CookieStore
+	feedbacksService *services.FeedbacksServices
 }
 
 // Fonction pour initialiser le controller et les injections
-func TopicControllerInit(template *template.Template, service *services.TopicsServices, store *sessions.CookieStore) *TopicController {
-	return &TopicController{service: service, template: template, store: store}
+func TopicControllerInit(template *template.Template, service *services.TopicsServices, store *sessions.CookieStore, feedbacksService *services.FeedbacksServices) *TopicController {
+	return &TopicController{service: service, template: template, store: store, feedbacksService: feedbacksService}
 }
 
 // Structure créant un item qui est le topic ainsi que l'utilisateur ayant écrit le topic, récupère aussi les messages du topic
@@ -35,6 +36,8 @@ type TopicData struct {
 	UpdatedAtFormatted string
 	Breadcrumbs        []models.Breadcrumb
 	CurrentUser        models.Users
+	FeedbackCounts     map[int]models.FeedbackInfo
+	UserVotes          map[int]string
 }
 
 // Routeur pour mettre en place les routes d'inscription
@@ -74,6 +77,17 @@ func (c *TopicController) DisplayTopic(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/error?code=404&message=messages_not_found", http.StatusSeeOther)
 		return
 	}
+
+	var messageIDs []int
+	for _, msg := range messages {
+		messageIDs = append(messageIDs, msg.Messages.Message_id)
+	}
+
+	feedbackCounts, _ := c.feedbacksService.GetFeedbackInfoForMessages(messageIDs, data.CurrentUser.User_id)
+	data.FeedbackCounts = feedbackCounts
+
+	userVotes, _ := c.feedbacksService.GetUserVotesForMessages(messageIDs, data.CurrentUser.User_id)
+	data.UserVotes = userVotes
 
 	for i := range messages {
 		formatted, _ := utilitaire.ConvertTime(messages[i].Messages.Created_at, messages[i].Messages.Updated_at, w, r)

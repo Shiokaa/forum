@@ -113,3 +113,13 @@ func (s *TopicsServices) CreateTopic(topic models.Topics) (int, error) {
 
 	return topicID, nil
 }
+
+// DeleteTopic demande la suppression d'un topic.
+func (s *TopicsServices) DeleteTopic(id int) error {
+	return s.topicsRepositories.DeleteTopic(id)
+}
+
+// GetTopicsByUserID transmet la demande de récupération des topics d'un utilisateur.
+func (s *TopicsServices) GetTopicsByUserID(userID int) ([]models.Topics_Join_Users, error) {
+	return s.topicsRepositories.GetTopicsByUserID(userID)
+}

@@ -16,7 +16,12 @@
         <nav aria-label="Navigation principale">
             <a href="/">Accueil</a>
             <a href="/categories">Catégories</a>
-            <a href="#">Recherche</a>
+            <form action="/recherche" method="GET" class="nav-search-form">
+                <input name="q" type="search" placeholder="Rechercher..." required>
+                <button type="submit" title="Lancer la recherche">🔍</button>
+            </form>
+            {{if eq .CurrentUser.Role_id 1}}
+            <a href="/admin" style="color: #ff8a80;">Admin</a> {{end}}
             {{if .Authenticated}}
             <a href="/profil?id={{.Item.Users.User_id}}">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
@@ -44,6 +49,12 @@
                 <span><strong>Forum :</strong> {{.Item.Forums.Name}}</span>
                 <span><strong>Date :</strong> {{.CreatedAtFormatted}}</span>
                 <span><strong>Modifié le :</strong> {{.UpdatedAtFormatted}}</span>
+                {{if or (eq $.CurrentUser.User_id .Item.Topics.User_Id) (eq $.CurrentUser.Role_id 1)}}
+                <form action="/topic/delete" method="POST" class="delete-topic-form">
+                    <input type="hidden" name="topic_id" value="{{.Item.Topics.Topic_id}}">
+                    <button type="submit" class="delete-btn">Supprimer le Topic</button>
+                </form>
+                {{end}}
             </header>
 
             <div class="add-message-container">
@@ -61,8 +72,40 @@
                         <div class="message-content">
                             <p>{{.Messages.Content}}</p>
                         </div>
-                        <div class="message-actions"> <a href="/reponse?id={{.Messages.Message_id}}">Répondre</a>
+                        <div class="message-actions">
+                            {{$vote := index $.UserVotes .Messages.Message_id}}
 
+                            <!-- Like button -->
+                            <form action="/feedback/submit" method="POST" class="feedback-form">
+                                <input type="hidden" name="message_id" value="{{.Messages.Message_id}}">
+                                <input type="hidden" name="topic_id" value="{{$.Item.Topics.Topic_id}}">
+                                <input type="hidden" name="vote_type" value="like">
+                                {{if eq $vote "like"}}
+                                <button type="submit" class="feedback-btn like-btn active">
+                                    {{else}}
+                                    <button type="submit" class="feedback-btn like-btn">
+                                        {{end}}
+                                        👍 <span>{{(index $.FeedbackCounts .Messages.Message_id).LikeCount}}</span>
+                                    </button>
+                            </form>
+
+                            <!-- Dislike button -->
+                            <form action="/feedback/submit" method="POST" class="feedback-form">
+                                <input type="hidden" name="message_id" value="{{.Messages.Message_id}}">
+                                <input type="hidden" name="topic_id" value="{{$.Item.Topics.Topic_id}}">
+                                <input type="hidden" name="vote_type" value="dislike">
+                                {{if eq $vote "dislike"}}
+                                <button type="submit" class="feedback-btn dislike-btn active">
+                                    {{else}}
+                                    <button type="submit" class="feedback-btn dislike-btn">
+                                        {{end}}
+                                        👎 <span>{{(index $.FeedbackCounts .Messages.Message_id).DislikeCount}}</span>
+                                    </button>
+                            </form>
+
+
+
+                            <a href="/reponse?id={{.Messages.Message_id}}">Répondre</a>
                             {{if or (eq $.CurrentUser.User_id .Messages.User_id) (eq $.CurrentUser.Role_id 1)}}
                             <form action="/message/delete" method="POST" class="delete-form">
                                 <input type="hidden" name="message_id" value="{{.Messages.Message_id}}">

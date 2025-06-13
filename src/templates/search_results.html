@@ -1,11 +1,11 @@
-{{define "forum"}}
+{{define "search_results"}}
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
-    <title>{{.ForumInfo.Forum.Name}} - Forum</title>
-    <link rel="stylesheet" href="/static/styles/forum.css">
+    <meta charset="UTF-g">
+    <title>Résultats pour "{{.Query}}" - Forum</title>
+    <link rel="stylesheet" href="/static/styles/search_results.css">
 </head>
 
 <body>
@@ -18,8 +18,6 @@
                 <input name="q" type="search" placeholder="Rechercher..." required>
                 <button type="submit" title="Lancer la recherche">🔍</button>
             </form>
-            {{if eq .User.Role_id 1}}
-            <a href="/admin" style="color: #ff8a80;">Admin</a> {{end}}
             {{if .Authenticated}}
             <a href="/profil?id={{.User.User_id}}" class="active">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
@@ -36,43 +34,27 @@
 
     {{template "breadcrumbs" .}}
 
-    <main class="page-container">
-        <header class="forum-header">
-            <h1>{{.ForumInfo.Forum.Name}}</h1>
-            <p>{{.ForumInfo.Forum.Description}}</p>
-            <a href="/topic/creer?forum_id={{.ForumInfo.Forum.Forum_id}}" class="create-topic-btn">Créer un nouveau
-                Topic</a>
-        </header>
+    <main class="content-main" style="margin: 2em auto; max-width: 960px; flex:1;">
+        <h1 class="content-title">Résultats de la recherche pour : "{{.Query}}"</h1>
 
-        <div class="topics-list">
-            {{range .Topics}}
-            <div class="topic-item">
-                <div class="topic-main">
-                    <a href="/topic?id={{.Topics.Topic_id}}">{{.Topics.Title}}</a>
-                    <span>par {{.Users.Name}}, le {{.CreatedAtFormatted}}</span>
+        <div class="results-list">
+            {{if .Results}}
+            {{range .Results}}
+            <div class="result-item">
+                <div class="result-header">
+                    <span class="result-type result-type-{{.Type}}">{{.Type}}</span>
+                    <a href="{{.URL}}" class="result-title">{{.Title}}</a>
                 </div>
+                {{if .Description}}
+                <p class="result-description">{{.Description}}</p>
+                {{end}}
             </div>
+            {{end}}
             {{else}}
-            <p>Aucun topic dans ce forum pour le moment.</p>
+            <p>Aucun résultat trouvé correspondant à votre recherche.</p>
             {{end}}
         </div>
-
-        {{if gt .Pagination.TotalPages 1}}
-        <nav class="pagination">
-            {{if .Pagination.HasPrev}}
-            <a href="/forum?id={{.ForumInfo.Forum.Forum_id}}&page={{.Pagination.PrevPage}}" class="page-link">&laquo;
-                Précédent</a>
-            {{end}}
-            <span class="page-info">Page {{.Pagination.CurrentPage}} sur {{.Pagination.TotalPages}}</span>
-            {{if .Pagination.HasNext}}
-            <a href="/forum?id={{.ForumInfo.Forum.Forum_id}}&page={{.Pagination.NextPage}}" class="page-link">Suivant
-                &raquo;</a>
-            {{end}}
-        </nav>
-        {{end}}
-
     </main>
-
 
     <footer>
         <p>

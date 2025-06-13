@@ -13,11 +13,11 @@ INSERT INTO categories (name, description) VALUES
 
 -- Utilisateurs (avec ajouts)
 INSERT INTO users (role_id, name, email, password) VALUES
-(1, 'Alice Dupont', 'alice@example.com', '$2a$12$RI2iB5A8iB.Jb2/C.jJ4a.4JvK.E5uL0zF6qE/I8aB2k4C2b4c6d8'),
-(2, 'Bob Martin', 'bob@example.com', '$2a$12$RI2iB5A8iB.Jb2/C.jJ4a.4JvK.E5uL0zF6qE/I8aB2k4C2b4c6d8'),
+(3, 'Alice Dupont', 'alice@example.com', '$2a$12$RI2iB5A8iB.Jb2/C.jJ4a.4JvK.E5uL0zF6qE/I8aB2k4C2b4c6d8'),
+(3, 'Bob Martin', 'bob@example.com', '$2a$12$RI2iB5A8iB.Jb2/C.jJ4a.4JvK.E5uL0zF6qE/I8aB2k4C2b4c6d8'),
 (3, 'Charlie Leroy', 'charlie@example.com', '$2a$12$RI2iB5A8iB.Jb2/C.jJ4a.4JvK.E5uL0zF6qE/I8aB2k4C2b4c6d8'),
 (3, 'Diane Fabre', 'diane@example.com', '$2a$12$RI2iB5A8iB.Jb2/C.jJ4a.4JvK.E5uL0zF6qE/I8aB2k4C2b4c6d8'),
-(2, 'Éric Lamont', 'eric@example.com', '$2a$12$RI2iB5A8iB.Jb2/C.jJ4a.4JvK.E5uL0zF6qE/I8aB2k4C2b4c6d8'),
+(3, 'Éric Lamont', 'eric@example.com', '$2a$12$RI2iB5A8iB.Jb2/C.jJ4a.4JvK.E5uL0zF6qE/I8aB2k4C2b4c6d8'),
 (3, 'Fiona Girard', 'fiona@example.com', '$2a$12$RI2iB5A8iB.Jb2/C.jJ4a.4JvK.E5uL0zF6qE/I8aB2k4C2b4c6d8'),
 (3, 'Gael Petit', 'gael@example.com', '$2a$12$RI2iB5A8iB.Jb2/C.jJ4a.4JvK.E5uL0zF6qE/I8aB2k4C2b4c6d8'),
 (3, 'Hélène Moreau', 'helene@example.com', '$2a$12$RI2iB5A8iB.Jb2/C.jJ4a.4JvK.E5uL0zF6qE/I8aB2k4C2b4c6d8'),

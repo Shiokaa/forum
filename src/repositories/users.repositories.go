@@ -55,7 +55,7 @@ func (r *UsersRepositories) ConnectUser(email string, password string) (models.U
 	sqlErr := r.db.QueryRow(query, email).Scan(&user.User_id, &user.Password, &user.Role_id)
 	if sqlErr != nil {
 		if sqlErr == sql.ErrNoRows {
-			return models.Users{}, nil
+			return models.Users{}, errors.New("identifiants invalides")
 		}
 		return models.Users{}, fmt.Errorf(" Erreur récupération item - Erreur : \n\t %s", sqlErr.Error())
 	}
@@ -86,4 +86,32 @@ func (r *UsersRepositories) GetUserById(id int) (models.Users, error) {
 	}
 
 	return user, nil
+}
+
+// GetAllUsers récupère tous les utilisateurs de la base de données.
+func (r *UsersRepositories) GetAllUsers() ([]models.Users, error) {
+	var users []models.Users
+	query := `SELECT user_id, role_id, name, email, created_at FROM users ORDER BY created_at DESC`
+
+	rows, err := r.db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var user models.Users
+		if err := rows.Scan(&user.User_id, &user.Role_id, &user.Name, &user.Email, &user.Created_at); err != nil {
+			continue // On ignore les erreurs de scan pour ne pas bloquer toute la liste
+		}
+		users = append(users, user)
+	}
+	return users, nil
+}
+
+// DeleteUser supprime un utilisateur de la base de données par son ID.
+func (r *UsersRepositories) DeleteUser(id int) error {
+	query := "DELETE FROM users WHERE user_id = ?"
+	_, err := r.db.Exec(query, id)
+	return err
 }

@@ -24,6 +24,48 @@ header {
   flex-wrap: wrap;
 }
 
+.nav-search-form {
+  display: flex;
+  align-items: center;
+}
+
+.nav-search-form input {
+  background-color: #3e3a3c;
+  border: 1px solid #a78e97;
+  color: #fcebf1;
+  padding: 10px 12px;
+  border-radius: 20px 0 0 20px;
+  border-right: none;
+  transition: background-color 0.2s;
+  font-size: 0.9em;
+}
+
+.nav-search-form input::placeholder {
+  color: #a79ca0;
+}
+
+.nav-search-form input:focus {
+  outline: none;
+  background-color: #524c4e;
+  border-color: #f8bbd0;
+}
+
+.nav-search-form button {
+  background-color: #3e3a3c;
+  border: 1px solid #a78e97;
+  color: #fcebf1;
+  padding: 8px 12px;
+  border-radius: 0 20px 20px 0;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  font-size: 0.9em;
+}
+
+.nav-search-form button:hover {
+  background-color: #e91e63;
+  border-color: #e91e63;
+}
+
 .logo {
   font-size: 1.5em;
 }
@@ -272,4 +314,41 @@ footer a {
 
 footer a:hover {
   color: #f8bbd0;
+}
+
+.message-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.feedback-form {
+  display: inline-block;
+  margin: 0;
+}
+.feedback-btn {
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.feedback-btn:hover {
+  border-color: #ccc;
+  background-color: #e0e0e0;
+}
+.feedback-btn.active.like-btn {
+  background-color: #4caf50;
+  color: white;
+  border-color: #4caf50;
+}
+.feedback-btn.active.dislike-btn {
+  background-color: #f44336;
+  color: white;
+  border-color: #f44336;
+}
+.feedback-btn span {
+  margin-left: 5px;
+  font-weight: bold;
 }

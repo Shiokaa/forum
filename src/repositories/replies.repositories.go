@@ -22,7 +22,7 @@ func (r *RepliesRepositories) GetReplies(id int) ([]models.Replies_Join_User, er
 
 	// Query permettant de récupérer les réponses à un message
 	query := `
-	SELECT mr.content, mr.created_at, u.name
+	SELECT mr.content, mr.created_at, u.name, mr.user_id, mr.reply_id
 	FROM message_replies AS mr
 	JOIN users AS u ON u.user_id = mr.user_id
 	WHERE mr.reply_to_id = ?;
@@ -39,7 +39,7 @@ func (r *RepliesRepositories) GetReplies(id int) ([]models.Replies_Join_User, er
 	for rows.Next() {
 		var item models.Replies_Join_User
 
-		if err := rows.Scan(&item.Replies.Content, &item.Replies.Created_at, &item.Users.Name); err != nil {
+		if err := rows.Scan(&item.Replies.Content, &item.Replies.Created_at, &item.Users.Name, &item.Replies.User_id, &item.Replies.Reply_id); err != nil {
 			log.Printf(" Erreur de scan topics : %v", err)
 			continue
 		}
@@ -48,4 +48,22 @@ func (r *RepliesRepositories) GetReplies(id int) ([]models.Replies_Join_User, er
 	}
 
 	return items, nil
+}
+
+// GetReplyByID récupère une seule réponse par son ID.
+func (r *RepliesRepositories) GetReplyByID(id int) (models.Replies, error) {
+	var reply models.Replies
+	query := "SELECT reply_id, user_id, reply_to_id FROM message_replies WHERE reply_id = ?"
+	err := r.db.QueryRow(query, id).Scan(&reply.Reply_id, &reply.User_id, &reply.Reply_to_id)
+	if err != nil {
+		return models.Replies{}, err
+	}
+	return reply, nil
+}
+
+// DeleteReply supprime une réponse par son ID.
+func (r *RepliesRepositories) DeleteReply(id int) error {
+	query := "DELETE FROM message_replies WHERE reply_id = ?"
+	_, err := r.db.Exec(query, id)
+	return err
 }

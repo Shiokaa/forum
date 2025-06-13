@@ -22,7 +22,7 @@ type AddMessageController struct {
 type AddMessageData struct {
 	Topic_id      string
 	Authenticated bool
-	User_id       int
+	User          models.Users
 	Breadcrumbs   []models.Breadcrumb
 }
 
@@ -40,10 +40,13 @@ func (c *AddMessageController) AddMessageRouter(r *mux.Router) {
 // Fonction permettant d'afficher le formulaire
 func (c *AddMessageController) DisplayAddMessage(w http.ResponseWriter, r *http.Request) {
 	var data AddMessageData
-	session, _ := c.store.Get(r, "session")
-
+	data.Authenticated = middlewares.SessionCheck(r, c.store)
+	if data.Authenticated {
+		session, _ := c.store.Get(r, "session")
+		data.User.User_id = session.Values["user_id"].(int)
+		data.User.Role_id = session.Values["role_id"].(int)
+	}
 	data.Authenticated = true
-	data.User_id = session.Values["user_id"].(int)
 	data.Topic_id = r.FormValue("topic_id")
 
 	data.Breadcrumbs = []models.Breadcrumb{

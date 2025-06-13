@@ -59,3 +59,13 @@ func (s *UsersServices) ReadId(idUser int) (models.Users, error) {
 
 	return topic, nil
 }
+
+// GetAll récupère la liste de tous les utilisateurs.
+func (s *UsersServices) GetAll() ([]models.Users, error) {
+	return s.userRepositories.GetAllUsers()
+}
+
+// DeleteUser demande la suppression d'un utilisateur.
+func (s *UsersServices) DeleteUser(id int) error {
+	return s.userRepositories.DeleteUser(id)
+}

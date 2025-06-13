@@ -79,7 +79,7 @@ func (r *TopicsRepositories) GetTopicWithMessage(id int) ([]models.Topics_Join_M
 
 	// Query permettant d'effectuer un join sur les messsages pour récupérer l'user du message et le topic où se trouve le message
 	query := `
-	SELECT m.message_id, m.content, m.created_at, u.name
+	SELECT m.message_id, m.content, m.created_at, u.name, m.user_id
 	FROM messages AS m
 	JOIN users AS u ON m.user_id = u.user_id
 	JOIN topics AS t ON m.topic_id = t.topic_id
@@ -97,7 +97,7 @@ func (r *TopicsRepositories) GetTopicWithMessage(id int) ([]models.Topics_Join_M
 	for rows.Next() {
 		var item models.Topics_Join_Messages
 
-		if err := rows.Scan(&item.Messages.Message_id, &item.Messages.Content, &item.Messages.Created_at, &item.Users.Name); err != nil {
+		if err := rows.Scan(&item.Messages.Message_id, &item.Messages.Content, &item.Messages.Created_at, &item.Users.Name, &item.Messages.User_id); err != nil {
 			log.Printf(" Erreur de scan messages : %v", err)
 			continue
 		}
@@ -233,4 +233,38 @@ func (r *TopicsRepositories) CreateTopic(topic models.Topics) (int, error) {
 	}
 
 	return int(id), nil
+}
+
+// DeleteTopic supprime un topic par son ID.
+func (r *TopicsRepositories) DeleteTopic(id int) error {
+	query := "DELETE FROM topics WHERE topic_id = ?"
+	_, err := r.db.Exec(query, id)
+	return err
+}
+
+// GetTopicsByUserID récupère tous les topics créés par un utilisateur spécifique.
+func (r *TopicsRepositories) GetTopicsByUserID(userID int) ([]models.Topics_Join_Users, error) {
+	var items []models.Topics_Join_Users
+	query := `
+    SELECT t.topic_id, t.title, t.created_at, u.name
+    FROM topics AS t
+    JOIN users AS u ON t.user_id = u.user_id
+    WHERE t.user_id = ?
+    ORDER BY t.created_at DESC
+    `
+	rows, err := r.db.Query(query, userID)
+	if err != nil {
+		return nil, fmt.Errorf("échec de la requête pour les topics de l'utilisateur : %w", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var item models.Topics_Join_Users
+		if err := rows.Scan(&item.Topics.Topic_id, &item.Topics.Title, &item.Topics.Created_at, &item.Users.Name); err != nil {
+			log.Printf("Erreur de scan pour un topic utilisateur : %v", err)
+			continue
+		}
+		items = append(items, item)
+	}
+	return items, nil
 }

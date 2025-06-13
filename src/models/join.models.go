@@ -53,3 +53,17 @@ type ForumWithCategory struct {
 	Forum    Forums
 	Category Categories
 }
+
+// SearchResult représente un résultat générique pour la recherche globale.
+type SearchResult struct {
+	Type        string
+	Title       string
+	Description string
+	URL         string
+}
+
+// FeedbackInfo regroupe les données d'un vote pour l'affichage.
+type FeedbackInfo struct {
+	LikeCount    int
+	DislikeCount int
+}
