@@ -58,3 +58,25 @@ func (r *ForumsRepositories) GetByCategoryID(categoryID int) ([]models.Forums, e
 	}
 	return forums, nil
 }
+
+// GetByIDWithCategory récupère un forum et les informations de sa catégorie parente.
+func (r *ForumsRepositories) GetByIDWithCategory(id int) (models.ForumWithCategory, error) {
+	var result models.ForumWithCategory
+	query := `
+    SELECT f.forum_id, f.name, f.description, f.category_id, c.category_id, c.name
+    FROM forums AS f
+    JOIN categories AS c ON f.category_id = c.category_id
+    WHERE f.forum_id = ?`
+
+	err := r.db.QueryRow(query, id).Scan(
+		&result.Forum.Forum_id, &result.Forum.Name, &result.Forum.Description, &result.Forum.Categorie_id,
+		&result.Category.Category_id, &result.Category.Name,
+	)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return result, fmt.Errorf("aucun forum trouvé avec l'ID %d", id)
+		}
+		return result, err
+	}
+	return result, nil
+}

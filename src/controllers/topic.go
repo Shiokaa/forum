@@ -34,6 +34,7 @@ type TopicData struct {
 	CreatedAtFormatted string
 	UpdatedAtFormatted string
 	Breadcrumbs        []models.Breadcrumb
+	CurrentUser        models.Users
 }
 
 // Routeur pour mettre en place les routes d'inscription
@@ -44,14 +45,12 @@ func (c *TopicController) TopicRouteur(r *mux.Router) {
 // Fonction permettant d'afficher les topics et de gérer les données
 func (c *TopicController) DisplayTopic(w http.ResponseWriter, r *http.Request) {
 	var data TopicData
-
-	// Determine si l'utilisateur est connecté ou non
 	data.Authenticated = middlewares.SessionCheck(r, c.store)
 
-	session, _ := c.store.Get(r, "session")
-
 	if data.Authenticated {
-		data.Item.Users.User_id = session.Values["user_id"].(int)
+		session, _ := c.store.Get(r, "session")
+		data.CurrentUser.User_id = session.Values["user_id"].(int)
+		data.CurrentUser.Role_id = session.Values["role_id"].(int)
 	}
 
 	// Récupération de l'ID depuis les paramètres

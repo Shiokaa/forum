@@ -222,6 +222,39 @@ h2 {
   color: #a79ca0;
 }
 
+.message-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1em;
+  margin-top: 1em;
+  font-size: 0.9em;
+}
+
+.message-actions a {
+  text-decoration: none;
+  color: #524c4e;
+}
+
+.delete-form {
+  margin: 0;
+}
+
+.delete-btn {
+  background: none;
+  border: 1px solid #ff5252;
+  color: #ff5252;
+  padding: 0.3em 0.6em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.delete-btn:hover {
+  background-color: #ff5252;
+  color: #fff;
+}
+
 footer {
   background-color: #524c4e;
   color: #fcebf1;

@@ -109,3 +109,9 @@ func (r *MessagesRepositories) GetRecentMessages(limit int) ([]models.Topics_Joi
 	}
 	return items, nil
 }
+
+func (r *MessagesRepositories) DeleteMessage(id int) error {
+	query := "DELETE FROM messages WHERE message_id = ?"
+	_, err := r.db.Exec(query, id)
+	return err
+}

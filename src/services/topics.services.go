@@ -91,3 +91,25 @@ func (s *TopicsServices) GetPaginatedTopics(offset, limit int) ([]models.Topics_
 func (s *TopicsServices) GetByCategoryID(categoryID int, limit int) ([]models.Topics_Join_Users, error) {
 	return s.topicsRepositories.GetByCategoryID(categoryID, limit)
 }
+
+func (s *TopicsServices) GetByForumIDPaginated(forumID, offset, limit int) ([]models.Topics_Join_Users, error) {
+	return s.topicsRepositories.GetByForumIDPaginated(forumID, offset, limit)
+}
+
+func (s *TopicsServices) GetTotalTopicsCountByForumID(forumID int) (int, error) {
+	return s.topicsRepositories.GetTotalTopicsCountByForumID(forumID)
+}
+
+// CreateTopic valide les données et demande la création d'un nouveau topic.
+func (s *TopicsServices) CreateTopic(topic models.Topics) (int, error) {
+	if topic.Title == "" || topic.Forum_id < 1 || topic.User_Id < 1 {
+		return -1, fmt.Errorf("données du topic invalides ou manquantes")
+	}
+
+	topicID, err := s.topicsRepositories.CreateTopic(topic)
+	if err != nil {
+		return -1, err
+	}
+
+	return topicID, nil
+}

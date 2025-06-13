@@ -1,3 +1,5 @@
+USE forum_db;
+
 -- Rôles (inchangé)
 INSERT INTO roles (name) VALUES ('admin'), ('moderator'), ('user');
 

@@ -60,6 +60,7 @@ func (c *ConnexionControllers) ConnexionTraitement(w http.ResponseWriter, r *htt
 	}
 
 	session.Values["user_id"] = user.User_id
+	session.Values["role_id"] = user.Role_id
 	session.Values["authenticated"] = true
 	session.Save(r, w)
 

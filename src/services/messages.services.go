@@ -76,3 +76,7 @@ func (s *MessagesServices) DisplayRecent(limit int) ([]models.Topics_Join_Messag
 
 	return items, nil
 }
+
+func (s *MessagesServices) DeleteMessage(id int) error {
+	return s.MessageRepositories.DeleteMessage(id)
+}

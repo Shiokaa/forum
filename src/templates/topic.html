@@ -61,15 +61,14 @@
                         <div class="message-content">
                             <p>{{.Messages.Content}}</p>
                         </div>
-                        <div class="message-response">
-                            <a href="/reponse?id={{.Messages.Message_id}}">
-                                <p>Répondre : </p>
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                    width="24px" fill="#000">
-                                    <path
-                                        d="m640-280-57-56 184-184-184-184 57-56 240 240-240 240ZM80-200v-160q0-83 58.5-141.5T280-560h247L383-704l57-56 240 240-240 240-57-56 144-144H280q-50 0-85 35t-35 85v160H80Z" />
-                                </svg>
-                            </a>
+                        <div class="message-actions"> <a href="/reponse?id={{.Messages.Message_id}}">Répondre</a>
+
+                            {{if or (eq $.CurrentUser.User_id .Messages.User_id) (eq $.CurrentUser.Role_id 1)}}
+                            <form action="/message/delete" method="POST" class="delete-form">
+                                <input type="hidden" name="message_id" value="{{.Messages.Message_id}}">
+                                <button type="submit" class="delete-btn">Supprimer</button>
+                            </form>
+                            {{end}}
                         </div>
                     </article>
                 </a>

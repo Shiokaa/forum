@@ -47,12 +47,12 @@ func (r *UsersRepositories) ConnectUser(email string, password string) (models.U
 	var user models.Users
 
 	query := `
-	SELECT user_id, password
+	SELECT user_id, password, role_id
 	FROM users
 	WHERE email = ?
 	`
 
-	sqlErr := r.db.QueryRow(query, email).Scan(&user.User_id, &user.Password)
+	sqlErr := r.db.QueryRow(query, email).Scan(&user.User_id, &user.Password, &user.Role_id)
 	if sqlErr != nil {
 		if sqlErr == sql.ErrNoRows {
 			return models.Users{}, nil

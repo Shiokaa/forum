@@ -21,3 +21,7 @@ func (s *ForumsServices) GetAll() ([]models.Forums, error) {
 func (s *ForumsServices) GetByCategoryID(categoryID int) ([]models.Forums, error) {
 	return s.forumsRepositories.GetByCategoryID(categoryID)
 }
+
+func (s *ForumsServices) GetByIDWithCategory(id int) (models.ForumWithCategory, error) {
+	return s.forumsRepositories.GetByIDWithCategory(id)
+}

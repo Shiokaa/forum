@@ -47,3 +47,9 @@ type CategoryWithForums struct {
 	Categories Categories
 	Forums     []Forums
 }
+
+// Modele pour regrouper un forum et sa catégorie
+type ForumWithCategory struct {
+	Forum    Forums
+	Category Categories
+}

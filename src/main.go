@@ -47,6 +47,9 @@ func main() {
 	reponseController := controllers.RepliesControllerInit(templates, messagesServices, store)
 	addMessageController := controllers.AddMessageControllerInit(templates, messagesServices, store)
 	categoryController := controllers.CategoryControllerInit(templates, store, categoriesServices, forumsServices, topicServices)
+	forumController := controllers.ForumControllerInit(templates, store, forumsServices, topicServices)
+	createTopicController := controllers.CreateTopicControllerInit(templates, store, topicServices, forumsServices, messagesServices)
+	moderationController := controllers.ModerationControllerInit(store, messagesServices)
 
 	router := mux.NewRouter() // Initialisation du router
 
@@ -65,6 +68,9 @@ func main() {
 	reponseController.RepliesRouter(router)
 	addMessageController.AddMessageRouter(router)
 	categoryController.CategoryRouter(router)
+	forumController.ForumRouter(router)
+	createTopicController.CreateTopicRouter(router)
+	moderationController.ModerationRouter(router)
 
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("./assets")))) // Sert les fichiers static
 

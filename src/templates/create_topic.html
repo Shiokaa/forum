@@ -1,0 +1,50 @@
+{{define "create_topic"}}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Créer un nouveau Topic</title>
+    <link rel="stylesheet" href="/static/styles/reponse.css">
+</head>
+<body>
+    <header>
+        </header>
+
+    {{template "breadcrumbs" .}}
+
+    <main>
+        <div class="container">
+            <h2>Créer un nouveau Topic</h2>
+            <form action="/topic/creer/traitement" method="post">
+                <div>
+                    <label for="title">Titre du Topic :</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+
+                <div>
+                    <label for="forum_id">Choisir un forum :</label>
+                    <select id="forum_id" name="forum_id" required>
+                        <option value="" disabled {{if eq .SelectedForum 0}}selected{{end}}>-- Sélectionnez un forum --</option>
+                        {{range .Forums}}
+                        <option value="{{.Forum_id}}" {{if eq .Forum_id $.SelectedForum}}selected{{end}}>{{.Name}}</option>
+                        {{end}}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="content">Votre premier message :</label>
+                    <textarea id="content" name="content" rows="10" required placeholder="Écrivez le contenu de votre topic ici..."></textarea>
+                </div>
+
+                <div>
+                    <button type="submit">Publier le Topic</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        </footer>
+</body>
+</html>
+{{end}}
