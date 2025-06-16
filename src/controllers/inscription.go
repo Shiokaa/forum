@@ -1,11 +1,15 @@
 package controllers
 
 import (
+	"errors"
+	"fmt"
 	"forum/src/middlewares"
 	"forum/src/models"
 	"forum/src/services"
 	"html/template"
 	"net/http"
+	"net/url"
+	"unicode"
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
@@ -20,7 +24,8 @@ type InscriptionController struct {
 }
 
 type InscriptionData struct {
-	Erreur string
+	Erreur  string
+	Message string
 }
 
 // Fonction pour initialiser le controller et les injections
@@ -39,12 +44,11 @@ func (c *InscriptionController) DisplayInscription(w http.ResponseWriter, r *htt
 	var data InscriptionData
 
 	code := r.FormValue("code")
-	if code == "invalid_data" {
-		data.Erreur = "invalid_data"
-		c.template.ExecuteTemplate(w, "inscription", data)
-		return
-	} else if code == "data_exist" {
-		data.Erreur = "data_exist"
+	message := r.FormValue("message")
+
+	if code != "" {
+		data.Erreur = code
+		data.Message = message
 		c.template.ExecuteTemplate(w, "inscription", data)
 		return
 	}
@@ -62,6 +66,15 @@ func (c *InscriptionController) InscriptionTraitement(w http.ResponseWriter, r *
 	// Vérification de la présence des données
 	if username == "" || email == "" || password == "" {
 		http.Redirect(w, r, "/inscription?code=invalid_data", http.StatusSeeOther)
+		return
+	}
+
+	errValidation := validatePassword(password)
+	if errValidation != nil {
+		// On redirige avec un message d'erreur spécifique pour le mot de passe
+		errorMessage := url.QueryEscape(errValidation.Error())
+		redirectURL := fmt.Sprintf("/inscription?code=invalid_password&message=%s", errorMessage)
+		http.Redirect(w, r, redirectURL, http.StatusSeeOther)
 		return
 	}
 
@@ -87,4 +100,49 @@ func (c *InscriptionController) InscriptionTraitement(w http.ResponseWriter, r *
 	}
 
 	http.Redirect(w, r, "/connexion", http.StatusMovedPermanently)
+}
+
+func validatePassword(password string) error {
+	var (
+		hasMinLen  = false
+		hasUpper   = false
+		hasLower   = false
+		hasNumber  = false
+		hasSpecial = false
+	)
+
+	if len(password) >= 12 {
+		hasMinLen = true
+	}
+
+	for _, char := range password {
+		switch {
+		case unicode.IsUpper(char):
+			hasUpper = true
+		case unicode.IsLower(char): // C'est une bonne pratique d'exiger aussi une minuscule
+			hasLower = true
+		case unicode.IsNumber(char):
+			hasNumber = true
+		case unicode.IsPunct(char) || unicode.IsSymbol(char):
+			hasSpecial = true
+		}
+	}
+
+	if !hasMinLen {
+		return errors.New(" Le mot de passe doit faire au moins 12 caractères")
+	}
+	if !hasUpper {
+		return errors.New(" Le mot de passe doit contenir au moins une majuscule")
+	}
+	if !hasLower {
+		return errors.New(" Le mot de passe doit contenir au moins une minuscule")
+	}
+	if !hasNumber {
+		return errors.New(" Le mot de passe doit contenir au moins un chiffre")
+	}
+	if !hasSpecial {
+		return errors.New(" Le mot de passe doit contenir au moins un caractère spécial")
+	}
+
+	return nil // Le mot de passe est valide
 }

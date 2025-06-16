@@ -35,13 +35,18 @@
 
                 <label for="password">Mot de passe :</label>
                 <input type="password" id="password" name="password" required>
+                <h6>Le mot de passe doit contenir 1 majuscule, 1 chiffre et un caractère spécial</h6>
 
                 <input type="submit" value="S'inscrire">
 
+                {{if .Erreur}}
                 {{if eq .Erreur "invalid_data"}}
-                <p>Erreur donnée manquante</p>
+                <p>Erreur : veuillez remplir tous les champs.</p>
                 {{else if eq .Erreur "data_exist"}}
-                <p>Nom d'utilisateur ou email déjà pris</p>
+                <p>Ce nom d'utilisateur ou cet email est déjà pris.</p>
+                {{else if eq .Erreur "invalid_password"}}
+                <p>{{.Message}}</p>
+                {{end}}
                 {{end}}
             </form>
         </div>
