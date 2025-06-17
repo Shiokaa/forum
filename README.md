@@ -44,7 +44,7 @@ cd forum
 
 ### 2. Configurer l'environnement
 
-Créez un fichier `.env` à la racine du projet avec ce contenu :
+Créez un fichier `.env` à la racine du projet (src) avec ce contenu :
 
 ```env
 DB_HOST=localhost
