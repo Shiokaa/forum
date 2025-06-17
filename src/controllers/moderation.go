@@ -27,6 +27,8 @@ func ModerationControllerInit(store *sessions.CookieStore, msgService *services.
 func (c *ModerationController) ModerationRouter(r *mux.Router) {
 	r.Handle("/message/delete", middlewares.RequireAuth(c.store, http.HandlerFunc(c.DeleteMessage))).Methods("POST")
 	r.Handle("/reply/delete", middlewares.RequireAuth(c.store, http.HandlerFunc(c.DeleteReply))).Methods("POST")
+	r.Handle("/topic/delete", middlewares.RequireAuth(c.store, http.HandlerFunc(c.DeleteTopic))).Methods("POST")
+
 }
 
 func (c *ModerationController) DeleteMessage(w http.ResponseWriter, r *http.Request) {
