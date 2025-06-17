@@ -39,7 +39,7 @@ Nous avons choisi de développer un forum de discussion en utilisant **Go** pour
 
 ```bash
 git clone https://github.com/Shiokaa/forum.git
-cd src
+cd forum
 ```
 
 ### 2. Configurer l'environnement
